@@ -1,0 +1,27 @@
+services:
+  diamondbank-accounts:
+    image: chamow01/diamonbank-accounts
+    mem_limit: 700m
+    ports:
+      - "8080:8080"
+    networks:
+      - diamonbank-network
+
+  diamondbank-loans:
+    image: chamow01/diamonbank-loans
+    mem_limit: 700m
+    ports:
+      - "8090:8090"
+    networks:
+      - diamonbank-network
+
+  diamondbank-cards:
+    image: chamow01/diamonbank-cards
+    mem_limit: 700m
+    ports:
+      - "9000:9000"
+    networks:
+      - diamonbank-network
+
+networks:
+  diamonbank-network:
