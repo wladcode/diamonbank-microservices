@@ -1,18 +1,27 @@
 package com.diamoncode.diamonbank.accounts.controller;
 
+import com.diamoncode.diamonbank.accounts.config.AccountsServiceConfig;
 import com.diamoncode.diamonbank.accounts.model.JpaEntityAccount;
 import com.diamoncode.diamonbank.accounts.model.JpaEntityCustomer;
+import com.diamoncode.diamonbank.accounts.model.Properties;
 import com.diamoncode.diamonbank.accounts.repository.AccountsRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 
 @RestController
+@RequestMapping("/accounts")
+
 public class AccountsController {
 
     @Autowired
     private AccountsRepository accountsRepository;
+
+    @Autowired
+    private AccountsServiceConfig accountsServiceConfig;
 
     @PostMapping("/myAccount")
     public JpaEntityAccount getAccountDetails(@RequestBody JpaEntityCustomer customer){
@@ -24,6 +33,19 @@ public class AccountsController {
         }
 
         return null;
+
+    }
+
+    @GetMapping("/properties")
+    public String getProperties () throws JsonProcessingException {
+
+        Properties properties = new Properties(accountsServiceConfig.getMsg(), accountsServiceConfig.getBuildVersion()
+        , accountsServiceConfig.getMailDetails(), accountsServiceConfig.getActiveBranches());
+
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+
+        return ow.writeValueAsString(properties);
+
 
     }
 }
