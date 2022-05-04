@@ -3,7 +3,7 @@ package com.diamoncode.diamonbank.accounts.controller;
 import com.diamoncode.diamonbank.accounts.config.AccountsServiceConfig;
 import com.diamoncode.diamonbank.accounts.model.JpaEntityAccount;
 import com.diamoncode.diamonbank.accounts.model.JpaEntityCustomer;
-import com.diamoncode.diamonbank.accounts.model.Properties;
+import com.diamoncode.diamonbank.accounts.controller.dto.PropertiesDto;
 import com.diamoncode.diamonbank.accounts.repository.AccountsRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,13 +39,12 @@ public class AccountsController {
     @GetMapping("/properties")
     public String getProperties () throws JsonProcessingException {
 
-        Properties properties = new Properties(accountsServiceConfig.getMsg(), accountsServiceConfig.getBuildVersion()
+        PropertiesDto properties = new PropertiesDto(accountsServiceConfig.getMsg(), accountsServiceConfig.getBuildVersion()
         , accountsServiceConfig.getMailDetails(), accountsServiceConfig.getActiveBranches());
 
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
         return ow.writeValueAsString(properties);
-
 
     }
 }
