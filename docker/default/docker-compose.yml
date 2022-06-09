@@ -7,7 +7,20 @@ services:
     networks:
       - diamonbank-network
 
-  diamondbank-accounts:
+  diamonbank-eurekaserver:
+    image: chamow01/diamonbank-eureka-server:latest
+    mem_limit: 700m
+    ports:
+      - "8070:8070"
+    networks:
+      - diamonbank-network
+    depends_on:
+      - diamonbank-configserver
+    extends:
+      file: deploy-area.yml
+      service: deploy_area
+
+  diamonbank-accounts:
     image: chamow01/diamonbank-accounts:latest
     mem_limit: 700m
     ports:
@@ -16,11 +29,26 @@ services:
       - diamonbank-network
     depends_on:
       - diamonbank-configserver
+      - diamonbank-eurekaserver
     extends:
       file: deploy-area.yml
       service: deploy_area
 
-  diamondbank-loans:
+  diamonbank-accounts2:
+    image: chamow01/diamonbank-accounts:latest
+    mem_limit: 700m
+    ports:
+      - "8081:8080"
+    networks:
+      - diamonbank-network
+    depends_on:
+      - diamonbank-configserver
+      - diamonbank-eurekaserver
+    extends:
+      file: deploy-area.yml
+      service: deploy_area
+
+  diamonbank-loans:
     image: chamow01/diamonbank-loans:latest
     mem_limit: 700m
     ports:
@@ -29,11 +57,12 @@ services:
       - diamonbank-network
     depends_on:
       - diamonbank-configserver
+      - diamonbank-eurekaserver
     extends:
       file: deploy-area.yml
       service: deploy_area
 
-  diamondbank-cards:
+  diamonbank-cards:
     image: chamow01/diamonbank-cards:latest
     mem_limit: 700m
     ports:
@@ -42,6 +71,7 @@ services:
       - diamonbank-network
     depends_on:
       - diamonbank-configserver
+      - diamonbank-eurekaserver
     extends:
       file: deploy-area.yml
       service: deploy_area

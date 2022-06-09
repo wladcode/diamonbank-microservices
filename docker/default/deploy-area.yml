@@ -9,3 +9,4 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: default
       SPRING_CONFIG_IMPORT: configserver:http://diamonbank-configserver:8071/
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://diamonbank-eurekaserver:8070/eureka/
