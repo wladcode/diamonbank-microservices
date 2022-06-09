@@ -10,6 +10,7 @@ import com.diamoncode.diamonbank.accounts.service.client.LoansFeingClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,6 +61,7 @@ public class AccountsController {
     }
 
     @PostMapping("/myCustomerDetails")
+    @CircuitBreaker(name = "detailForCustomerSupportApp", fallbackMethod = "myCustomerDetailsFallBack")
     public CustomerDetailsDto getCustomerDetails(@RequestBody CustomerDto customerDto) {
 
         JpaEntityAccount accounts = accountsRepository.findByCustomerId(customerDto.getCustomerId());
@@ -72,5 +74,15 @@ public class AccountsController {
                 .cards(cards)
                 .build();
 
+    }
+
+
+    private CustomerDetailsDto myCustomerDetailsFallBack(CustomerDto customerDto, Throwable throwable) {
+
+        JpaEntityAccount accounts = accountsRepository.findByCustomerId(customerDto.getCustomerId());
+
+        return CustomerDetailsDto.builder()
+                .accounts(accounts)
+                .build();
     }
 }
