@@ -2,8 +2,7 @@
 
 ## USE OF DOCKER COMPOSE
 
-> To use docker compose follow the next steps: <br>
-> - First, you need to make a copy of ***.env_template*** file,
-> - Then, rename it to ***.env***,
-> - Next, open **docker**,
+> To use docker compose follow the next steps:
+> - First, open **docker** folder,
+> - Then, copy ***.env_template*** file, and rename it to ***.env***,
 > - Finally, execute `docker compose up -d` command
