@@ -1,27 +1,76 @@
+version: "3.1"
 services:
-  diamondbank-accounts:
-    image: chamow01/diamonbank-accounts
+  configserver:
+    image: ${CONFIG_SERVER_IMAGE}
+    container_name: configserver
+    mem_limit: 700m
+    ports:
+      - "8071:8071"
+    networks:
+      - diamonbank-network
+
+  eurekaserver:
+    image: ${EUREKA_SERVER_IMAGE}
+    container_name: eurekaserver
+    mem_limit: 700m
+    ports:
+      - "8070:8070"
+    networks:
+      - diamonbank-network
+    depends_on:
+      - configserver
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 15s
+        max_attempts: 3
+        window: 120s
+    environment:
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+
+  accounts:
+    image: ${ACCOUNTS_IMAGE}
+    container_name: accounts
     mem_limit: 700m
     ports:
       - "8080:8080"
     networks:
       - diamonbank-network
+    depends_on:
+      - configserver
+      - eurekaserver
+    extends:
+      file: deploy-area.yml
+      service: deploy_area
 
-  diamondbank-loans:
-    image: chamow01/diamonbank-loans
+  loans:
+    image: ${LOANS_IMAGE}
+    container_name: loans
     mem_limit: 700m
     ports:
       - "8090:8090"
     networks:
       - diamonbank-network
+    depends_on:
+      - configserver
+      - eurekaserver
+    extends:
+      file: deploy-area.yml
+      service: deploy_area
 
-  diamondbank-cards:
-    image: chamow01/diamonbank-cards
+  cards:
+    image: ${CARDS_IMAGE}
+    container_name: cards
     mem_limit: 700m
     ports:
       - "9000:9000"
     networks:
       - diamonbank-network
-
+    depends_on:
+      - configserver
+      - eurekaserver
+    extends:
+      file: deploy-area.yml
+      service: deploy_area
 networks:
   diamonbank-network:
