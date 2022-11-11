@@ -1,0 +1,23 @@
+version: "3"
+
+tasks:
+  hello:
+    cmds:
+      - echo 'Hello World from Task!'
+    silent: true
+  docker-compose-up:
+    cmds:
+      - cd docker && docker compose up -d
+    silent: true
+  docker-compose-stop:
+    cmds:
+      - cd docker && docker compose stop
+    silent: true
+  docker-compose-down:
+    cmds:
+      - cd docker && docker compose down
+    silent: true
+  local-image-loans:
+    cmds:
+      - cd diamonbank-loans && docker build -t local/diamoncode-loans:SNAPSHOT .
+    silent: true
