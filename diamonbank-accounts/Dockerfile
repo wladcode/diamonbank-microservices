@@ -5,7 +5,7 @@ FROM openjdk:11-slim as build
 MAINTAINER diamondcode
 
 #Add the application's jar to the container
-COPY target/diamonbank-accounts-1.0.0-SNAPSHOT.jar diamonbank-accounts.jar
+COPY target/diamonbank-accounts.jar diamonbank-accounts.jar
 
 #Execute the applitaion
 ENTRYPOINT ["java", "-jar", "diamonbank-accounts.jar"]

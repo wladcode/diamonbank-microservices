@@ -11,9 +11,10 @@ CREATE TABLE customers (
 
 
 CREATE TABLE accounts (
-    account_number int AUTO_INCREMENT PRIMARY KEY,
-    customer_id int NOT NULL,
+    account_id int AUTO_INCREMENT PRIMARY KEY,
+    account_number varchar(20) NOT NULL,
     account_type varchar(100) NOT NULL,
     branch_address varchar(200) NOT NULL,
-    created_date date DEFAULT NULL
+    created_date date DEFAULT NULL,
+    customer_id int NOT NULL
 );

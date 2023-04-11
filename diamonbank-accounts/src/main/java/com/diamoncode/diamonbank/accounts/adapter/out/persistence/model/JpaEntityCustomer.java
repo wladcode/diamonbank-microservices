@@ -1,4 +1,4 @@
-package com.diamoncode.diamonbank.accounts.model;
+package com.diamoncode.diamonbank.accounts.adapter.out.persistence.model;
 
 import lombok.Getter;
 import lombok.Setter;

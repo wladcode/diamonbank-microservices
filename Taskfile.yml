@@ -21,3 +21,11 @@ tasks:
     cmds:
       - cd diamonbank-loans && docker build -t local/diamoncode-loans:SNAPSHOT .
     silent: true
+  local-image-accounts:
+    cmds:
+      - cd diamonbank-accounts && docker build -t local/diamoncode-accounts:SNAPSHOT .
+    silent: true
+  docker-up:    
+    cmds:
+      - cd docker && docker compose up -d
+    silent: true

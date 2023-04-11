@@ -1,4 +1,4 @@
-package com.diamoncode.diamonbank.accounts.model;
+package com.diamoncode.diamonbank.accounts.adapter.out.persistence.model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "accounts")
@@ -18,11 +18,11 @@ import java.time.LocalDate;
 public class JpaEntityAccount {
 
     @Id
-    @Column(name = "account_number")
-    private long accountNumber;
+    @Column(name = "account_id")
+    private long accountId;
 
-    @Column(name = "customer_id")
-    private long customerId;
+    @Column(name = "account_number")
+    private String accountNumber;
 
     @Column(name = "account_type")
     private String accountType;
@@ -31,6 +31,9 @@ public class JpaEntityAccount {
     private String branchAddress;
 
     @Column(name = "created_date")
-    private LocalDate createDate;
+    private LocalDateTime createDate;
+
+    @Column(name = "customer_id")
+    private long customerId;
 
 }

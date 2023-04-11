@@ -1,4 +1,4 @@
-package com.diamoncode.diamonbank.accounts.controller.dto;
+package com.diamoncode.diamonbank.accounts.aplication.port.out.dto;
 
 import lombok.Getter;
 import lombok.Setter;

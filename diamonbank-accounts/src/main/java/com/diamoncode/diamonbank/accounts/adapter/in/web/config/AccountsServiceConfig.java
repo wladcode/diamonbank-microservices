@@ -1,4 +1,4 @@
-package com.diamoncode.diamonbank.accounts.config;
+package com.diamoncode.diamonbank.accounts.adapter.in.web.config;
 
 import lombok.Getter;
 import lombok.Setter;

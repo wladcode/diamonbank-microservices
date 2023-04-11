@@ -1,9 +1,8 @@
-package com.diamoncode.diamonbank.accounts.controller.dto;
+package com.diamoncode.diamonbank.accounts.aplication.port.out.dto;
 
 
 import java.util.List;
 
-import com.diamoncode.diamonbank.accounts.model.JpaEntityAccount;
 import lombok.*;
 
 /**
@@ -14,9 +13,9 @@ import lombok.*;
 @ToString
 @Builder
 @AllArgsConstructor
-public class CustomerDetailsDto {
+public class ConsolidatePositionDto {
 
-    private final JpaEntityAccount accounts;
+    private final List<AccountDto> accounts;
     private final List<LoansDto> loans;
     private final List<CardsDto> cards;
 
