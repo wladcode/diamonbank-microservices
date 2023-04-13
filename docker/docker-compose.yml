@@ -32,17 +32,16 @@ services:
     image: ${ACCOUNTS_IMAGE}
     container_name: accounts
     mem_limit: 700m
-    ports:
-      - "8080:8080"
-    networks:
-      - diamonbank-network
     depends_on:
       - configserver
       - eurekaserver
     extends:
       file: deploy-area.yml
       service: deploy_area
-
+    ports:
+      - "8080:8080"
+    networks:
+      - diamonbank-network
   loans:
     image: ${LOANS_IMAGE}
     container_name: loans

@@ -38,7 +38,7 @@ public class AccountPersistenceAdapter implements AccountPort {
     public ConsolidatePositionDto getConsolidatePosition(Long accountId) {
         CustomerDto customerDto = new CustomerDto(accountId);
         List<JpaEntityAccount> accounts = accountsRepository.findByCustomerId(accountId);
-        List<LoansDto> loans = loansFeingClient.getCardDetails(customerDto);
+        List<LoansDto> loans = loansFeingClient.getLoans(customerDto);
         List<CardsDto> cards = cardsFeingClient.getCardDetails(customerDto);
 
         return ConsolidatePositionDto.builder()

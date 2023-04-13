@@ -9,6 +9,10 @@ tasks:
     cmds:
       - cd docker && docker compose up -d
     silent: true
+  docker-compose-up-debug:
+    cmds:      
+      - cd docker && docker compose -f docker-compose.yml -f docker-compose-debug.yml up -d
+    silent: true
   docker-compose-stop:
     cmds:
       - cd docker && docker compose stop
@@ -25,7 +29,8 @@ tasks:
     cmds:
       - cd diamonbank-accounts && docker build -t local/diamoncode-accounts:SNAPSHOT .
     silent: true
-  docker-up:    
+  local-image-config-server:
     cmds:
-      - cd docker && docker compose up -d
+      - cd diamonbank-config-server && docker build -t local/diamonbank-config-server:SNAPSHOT .
     silent: true
+  

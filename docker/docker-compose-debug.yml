@@ -1,0 +1,19 @@
+version: "3.1"
+services:
+  accounts:
+    image: ${ACCOUNTS_IMAGE}
+    container_name: accounts
+    mem_limit: 700m
+    depends_on:
+      - configserver
+      - eurekaserver
+    extends:
+      file: deploy-area.yml
+      service: deploy_area
+    ports:
+      - "5005:5005"
+      - "8080:8080"
+    environment:
+      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+    networks:
+      - diamonbank-network

@@ -24,7 +24,7 @@ public class ConsolidatePositionController extends WebAdapterResponse {
     private final AccountsUseCase accountsUseCase;
 
     @GetMapping("/consolidate/{customerId}")
-    @CircuitBreaker(name = "detailForCustomerSupportApp", fallbackMethod = "myCustomerDetailsFallBack")
+    @CircuitBreaker(name = "detailForCustomerSupportApp", fallbackMethod = "")
     public ResponseDTO getCustomerDetails(@PathVariable("customerId") Long customerId) {
 
         ConsolidatePositionDto consolidatePositionDto = getConsolidatePosition.getConsolidatePosition(customerId);
