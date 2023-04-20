@@ -31,6 +31,10 @@ tasks:
     silent: true
   local-image-config-server:
     cmds:
-      - cd diamonbank-config-server && docker build -t local/diamonbank-config-server:SNAPSHOT .
+      - cd diamonbank-config-server && mvn clean install && mvn spring-boot:build-image
     silent: true
+  local-image-eureka-server:
+      cmds:
+        - cd diamonbank-eureka-server && mvn clean install && mvn spring-boot:build-image
+      silent: true
   
