@@ -1,7 +1,7 @@
-package com.diamoncode.diamonbank.accounts.arch.adapter.out.persistence.mapper;
+package com.diamoncode.diamonbank.accounts.adapter.out.persistence.mapper;
 
-import com.diamoncode.diamonbank.accounts.arch.adapter.out.persistence.model.JpaEntityAccount;
-import com.diamoncode.diamonbank.accounts.arch.aplication.port.out.dto.AccountDto;
+import com.diamoncode.diamonbank.accounts.adapter.out.persistence.model.JpaEntityAccount;
+import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.AccountDto;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;

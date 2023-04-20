@@ -1,4 +1,4 @@
-package com.diamoncode.diamonbank.accounts.arch.aplication.port.out.dto;
+package com.diamoncode.diamonbank.accounts.aplication.port.out.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,9 +1,10 @@
-package com.diamoncode.diamonbank.accounts.arch.adapter.in.web;
+package com.diamoncode.diamonbank.accounts.adapter.in.web;
 
-import com.diamoncode.diamonbank.accounts.arch.adapter.in.web.config.AccountsServiceConfig;
-import com.diamoncode.diamonbank.accounts.arch.aplication.port.in.AccountsUseCase;
-import com.diamoncode.diamonbank.accounts.arch.aplication.port.out.dto.AccountDto;
-import com.diamoncode.diamonbank.accounts.arch.aplication.port.out.dto.PropertiesDto;
+import com.diamoncode.diamonbank.accounts.adapter.in.web.config.AccountsServiceConfig;
+import com.diamoncode.diamonbank.accounts.aplication.port.in.AccountsUseCase;
+import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.AccountDto;
+import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.PropertiesDto;
+import com.diamoncode.i18n.client.factory.I18nFactory;
 import com.diamondcode.common.adapter.in.web.model.ResponseDTO;
 import com.diamondcode.common.adapter.in.web.model.WebAdapterResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -28,6 +29,19 @@ public class AccountsController extends WebAdapterResponse {
     public ResponseDTO getAccountDetails(@PathVariable("idAccount") long idAccount) {
         AccountDto accountDto = accountsUseCase.findById(idAccount);
         return getResponse("", accountDto);
+
+    }
+
+    @GetMapping("/testI18n/{withDefault}")
+    public ResponseDTO testI18n(@PathVariable("withDefault") boolean withDefault) {
+        String headerName = null;
+        if (withDefault) {
+            headerName = I18nFactory.getInstance().getMessage("header.name", "es", "Valor por defecto");
+        } else {
+            headerName = I18nFactory.getInstance().getMessage("header.name", "es");
+        }
+
+        return getResponse("Respuesta obtenida desde I18N", headerName);
 
     }
 

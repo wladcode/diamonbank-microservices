@@ -1,4 +1,4 @@
-package com.diamoncode.diamonbank.accounts.arch.domain;
+package com.diamoncode.diamonbank.accounts.domain;
 
 import lombok.NonNull;
 import lombok.Value;

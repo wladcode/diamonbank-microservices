@@ -1,7 +1,7 @@
-package com.diamoncode.diamonbank.accounts.arch.aplication.port.in;
+package com.diamoncode.diamonbank.accounts.aplication.port.in;
 
 
-import com.diamoncode.diamonbank.accounts.arch.domain.Money;
+import com.diamoncode.diamonbank.accounts.domain.Money;
 
 /**
  * Read only use case

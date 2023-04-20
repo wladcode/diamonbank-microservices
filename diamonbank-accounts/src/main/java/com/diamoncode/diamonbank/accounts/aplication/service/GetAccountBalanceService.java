@@ -1,9 +1,9 @@
-package com.diamoncode.diamonbank.accounts.arch.aplication.service;
+package com.diamoncode.diamonbank.accounts.aplication.service;
 
 
-import com.diamoncode.diamonbank.accounts.arch.aplication.port.in.GetAccountBalanceQueryUseCase;
-import com.diamoncode.diamonbank.accounts.arch.aplication.port.out.AccountPort;
-import com.diamoncode.diamonbank.accounts.arch.domain.Money;
+import com.diamoncode.diamonbank.accounts.aplication.port.in.GetAccountBalanceQueryUseCase;
+import com.diamoncode.diamonbank.accounts.aplication.port.out.AccountPort;
+import com.diamoncode.diamonbank.accounts.domain.Money;
 import com.diamondcode.common.application.service.UseCase;
 import lombok.RequiredArgsConstructor;
 

@@ -1,8 +1,8 @@
-package com.diamoncode.diamonbank.accounts.arch.aplication.port.out;
+package com.diamoncode.diamonbank.accounts.aplication.port.out;
 
-import com.diamoncode.diamonbank.accounts.arch.aplication.port.out.dto.AccountDto;
-import com.diamoncode.diamonbank.accounts.arch.domain.Account;
-import com.diamoncode.diamonbank.accounts.arch.aplication.port.out.dto.ConsolidatePositionDto;
+import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.AccountDto;
+import com.diamoncode.diamonbank.accounts.domain.Account;
+import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.ConsolidatePositionDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
