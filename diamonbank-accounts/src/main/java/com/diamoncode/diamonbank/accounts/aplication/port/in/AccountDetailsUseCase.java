@@ -1,4 +1,4 @@
-package com.diamoncode.diamonbank.accounts.aplication.port.in;
+package com.diamoncode.diamonbank.accounts.arch.aplication.port.in;
 
 public interface AccountDetailsUseCase {
 }

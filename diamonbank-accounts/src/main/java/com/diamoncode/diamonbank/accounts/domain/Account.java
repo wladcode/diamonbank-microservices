@@ -1,4 +1,4 @@
-package com.diamoncode.diamonbank.accounts.domain;
+package com.diamoncode.diamonbank.accounts.arch.domain;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

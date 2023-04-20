@@ -1,9 +1,9 @@
-package com.diamoncode.diamonbank.accounts.adapter.in.web;
+package com.diamoncode.diamonbank.accounts.arch.adapter.in.web;
 
-import com.diamoncode.diamonbank.accounts.adapter.in.web.config.AccountsServiceConfig;
-import com.diamoncode.diamonbank.accounts.aplication.port.in.AccountsUseCase;
-import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.AccountDto;
-import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.PropertiesDto;
+import com.diamoncode.diamonbank.accounts.arch.adapter.in.web.config.AccountsServiceConfig;
+import com.diamoncode.diamonbank.accounts.arch.aplication.port.in.AccountsUseCase;
+import com.diamoncode.diamonbank.accounts.arch.aplication.port.out.dto.AccountDto;
+import com.diamoncode.diamonbank.accounts.arch.aplication.port.out.dto.PropertiesDto;
 import com.diamondcode.common.adapter.in.web.model.ResponseDTO;
 import com.diamondcode.common.adapter.in.web.model.WebAdapterResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;

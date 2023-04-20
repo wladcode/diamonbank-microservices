@@ -1,6 +1,6 @@
-package com.diamoncode.diamonbank.accounts.aplication.port.in;
+package com.diamoncode.diamonbank.accounts.arch.aplication.port.in;
 
-import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.ConsolidatePositionDto;
+import com.diamoncode.diamonbank.accounts.arch.aplication.port.out.dto.ConsolidatePositionDto;
 
 public interface GetConsolidatePositionUseCase {
 

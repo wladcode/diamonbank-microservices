@@ -1,6 +1,6 @@
-package com.diamoncode.diamonbank.accounts.adapter.out.persistence.repository;
+package com.diamoncode.diamonbank.accounts.arch.adapter.out.persistence.repository;
 
-import com.diamoncode.diamonbank.accounts.adapter.out.persistence.model.JpaEntityAccount;
+import com.diamoncode.diamonbank.accounts.arch.adapter.out.persistence.model.JpaEntityAccount;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,8 +1,8 @@
-package com.diamoncode.diamonbank.accounts.aplication.service;
+package com.diamoncode.diamonbank.accounts.arch.aplication.service;
 
-import com.diamoncode.diamonbank.accounts.aplication.port.in.GetConsolidatePositionUseCase;
-import com.diamoncode.diamonbank.accounts.aplication.port.out.AccountPort;
-import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.ConsolidatePositionDto;
+import com.diamoncode.diamonbank.accounts.arch.aplication.port.in.GetConsolidatePositionUseCase;
+import com.diamoncode.diamonbank.accounts.arch.aplication.port.out.AccountPort;
+import com.diamoncode.diamonbank.accounts.arch.aplication.port.out.dto.ConsolidatePositionDto;
 import com.diamondcode.common.application.service.UseCase;
 import lombok.RequiredArgsConstructor;
 

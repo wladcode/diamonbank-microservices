@@ -1,7 +1,7 @@
-package com.diamoncode.diamonbank.accounts.adapter.in.web.feing;
+package com.diamoncode.diamonbank.accounts.arch.adapter.in.web.feing;
 
-import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.CustomerDto;
-import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.LoansDto;
+import com.diamoncode.diamonbank.accounts.arch.aplication.port.out.dto.CustomerDto;
+import com.diamoncode.diamonbank.accounts.arch.aplication.port.out.dto.LoansDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
