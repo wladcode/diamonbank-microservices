@@ -8,5 +8,5 @@ MAINTAINER diamondcode
 COPY target/diamonbank-accounts.jar diamonbank-accounts.jar
 
 #Execute the applitaion
-ENTRYPOINT ["java", "-jar", "diamonbank-accounts.jar"]
+ENTRYPOINT exec java $JAVA_OPTS -jar diamonbank-accounts.jar
 

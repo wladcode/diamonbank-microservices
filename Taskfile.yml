@@ -27,7 +27,7 @@ tasks:
     silent: true
   local-image-accounts:
     cmds:
-      - cd diamonbank-accounts && docker build -t local/diamoncode-accounts:SNAPSHOT .
+      - cd diamonbank-accounts && mvn clean install && docker build -t local/diamoncode-accounts:SNAPSHOT .
     silent: true
   local-image-config-server:
     cmds:

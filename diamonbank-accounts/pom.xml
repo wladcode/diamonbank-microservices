@@ -101,7 +101,7 @@
         <dependency>
             <groupId>com.diamoncode</groupId>
             <artifactId>internationalization-client</artifactId>
-            <version>1.0.6-SNAPSHOT</version>
+            <version>1.0.9-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

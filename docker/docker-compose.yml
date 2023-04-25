@@ -28,6 +28,24 @@ services:
     environment:
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
 
+  dci18n:
+    image: ${I18N_IMAGE}
+    container_name: dci18n
+    ports:
+      - "9100:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=${I18N_DATABASE_URL}
+      - SPRING_DATASOURCE_USERNAME=${DATABASE_USER}
+      - SPRING_DATASOURCE_PASSWORD=${DATABASE_PASSWORD}
+    deploy:
+      resources:
+        limits:
+          memory: 800M
+        reservations:
+          memory: 500M
+    networks:
+      - diamonbank-network
+
   accounts:
     image: ${ACCOUNTS_IMAGE}
     container_name: accounts
@@ -39,7 +57,7 @@ services:
       file: deploy-area.yml
       service: deploy_area
     ports:
-      - "8080:8080"
+      - "9082:9082"
     networks:
       - diamonbank-network
   loans:
@@ -72,22 +90,5 @@ services:
       file: deploy-area.yml
       service: deploy_area
 
-  i18n:
-    image: ${I18N_IMAGE}
-    container_name: dc_i18n
-    ports:
-      - "9100:8080"
-    healthcheck:
-      test: curl  --fail http://localhost:8080/actuator/health || exit 1
-    environment:
-      - SPRING_DATASOURCE_URL=${I18N_DATABASE_URL}
-      - SPRING_DATASOURCE_USERNAME=${DATABASE_USER}
-      - SPRING_DATASOURCE_PASSWORD=${DATABASE_PASSWORD}
-    deploy:
-      resources:
-        limits:
-          memory: 800M
-        reservations:
-          memory: 500M
 networks:
   diamonbank-network:
