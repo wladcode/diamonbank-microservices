@@ -58,6 +58,9 @@ services:
       service: deploy_area
     ports:
       - "9082:9082"
+      - "5005:5005"
+    environment:
+      - DEBUG_ENABLED=true
     networks:
       - diamonbank-network
   loans:

@@ -4,7 +4,7 @@ import com.diamoncode.diamonbank.accounts.adapter.in.web.config.AccountsServiceC
 import com.diamoncode.diamonbank.accounts.aplication.port.in.AccountsUseCase;
 import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.AccountDto;
 import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.PropertiesDto;
-import com.diamoncode.i18n.client.factory.I18nFactory;
+import com.diamoncode.i18n.client.I18nFactory;
 import com.diamondcode.common.adapter.in.web.model.ResponseDTO;
 import com.diamondcode.common.adapter.in.web.model.WebAdapterResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
