@@ -21,5 +21,4 @@ public class AccountsServiceConfig {
     private Map<String, String> mailDetails;
     private List<String> activeBranches;
 
-
 }

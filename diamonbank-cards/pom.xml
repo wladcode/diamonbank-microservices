@@ -85,9 +85,9 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<!-- Cofiguration for creating a docker image -->
+					<!-- Cofiguration for creating a docker image using building packs -->
 					<image>
-						<name>chamow01/${project.artifactId}</name>
+						<name>chamow01/${project.artifactId}:${project.version}</name>
 					</image>
 					<excludes>
 						<exclude>

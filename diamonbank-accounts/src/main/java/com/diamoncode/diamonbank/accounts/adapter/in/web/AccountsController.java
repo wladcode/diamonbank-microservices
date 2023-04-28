@@ -25,6 +25,18 @@ public class AccountsController extends WebAdapterResponse {
     private final AccountsServiceConfig accountsServiceConfig;
 
 
+
+    @GetMapping("/properties")
+    public ResponseDTO getProperties() throws JsonProcessingException {
+
+        PropertiesDto properties = new PropertiesDto(accountsServiceConfig.getMsg(), accountsServiceConfig.getBuildVersion()
+                , accountsServiceConfig.getMailDetails(), accountsServiceConfig.getActiveBranches());
+
+        return getResponse("", properties);
+
+    }
+
+
     @GetMapping("/myAccount/{idAccount}")
     public ResponseDTO getAccountDetails(@PathVariable("idAccount") long idAccount) {
         AccountDto accountDto = accountsUseCase.findById(idAccount);
@@ -45,15 +57,6 @@ public class AccountsController extends WebAdapterResponse {
 
     }
 
-    @GetMapping("/properties")
-    public ResponseDTO getProperties() throws JsonProcessingException {
-
-        PropertiesDto properties = new PropertiesDto(accountsServiceConfig.getMsg(), accountsServiceConfig.getBuildVersion()
-                , accountsServiceConfig.getMailDetails(), accountsServiceConfig.getActiveBranches());
-
-        return getResponse("", properties);
-
-    }
 
 
 }

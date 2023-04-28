@@ -29,6 +29,10 @@ tasks:
     cmds:
       - cd diamonbank-accounts && mvn clean install && docker build -t local/diamoncode-accounts:SNAPSHOT .
     silent: true
+  local-image-cards:
+      cmds:
+        - cd diamonbank-cards && mvn spring-boot:build-image
+      silent: true
   local-image-config-server:
     cmds:
       - cd diamonbank-config-server && mvn clean install && mvn spring-boot:build-image
