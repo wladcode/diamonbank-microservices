@@ -64,6 +64,19 @@ services:
       - "5005:5005"
     environment:
       - DEBUG_ENABLED=true
+  #accounts1:
+  #  image: ${ACCOUNTS_IMAGE}
+  #  container_name: accounts1
+  #  mem_limit: 700m
+  #  depends_on:
+      - configserver
+      - eurekaserver
+  #  extends:
+      file: deploy-area.yml
+      service: deploy_area
+  #  ports:
+  #    - "9087:9082"
+
 
   loans:
     image: ${LOANS_IMAGE}
