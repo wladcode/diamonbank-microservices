@@ -31,7 +31,7 @@ tasks:
     silent: true
   local-image-cards:
       cmds:
-        - cd diamonbank-cards && mvn spring-boot:build-image
+        - cd diamonbank-cards && mvn clean install && mvn spring-boot:build-image
       silent: true
   local-image-config-server:
     cmds:

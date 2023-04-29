@@ -40,7 +40,6 @@
                     <artifactId>ribbon-eureka</artifactId>
                 </exclusion>
             </exclusions>
-
         </dependency>
 
         <dependency>
@@ -69,7 +68,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<image>
-                        <name>chamow01/${project.artifactId}</name>
+                        <name>chamow01/${project.artifactId}:${project.version}</name>
 					</image>
 				</configuration>
             </plugin>
