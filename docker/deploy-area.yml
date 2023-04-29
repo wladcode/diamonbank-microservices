@@ -3,11 +3,13 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
-        delay: 15s
+        delay: 5s
         max_attempts: 3
         window: 120s
+    networks:
+      - diamonbank_ns
     environment:
       - SPRING_PROFILES_ACTIVE=${DEPLOY_ENVIRONMENT}
-      - SPRING_CONFIG_IMPORT=configserver:http://configserver:8071/
+      - SPRING_CONFIG_IMPORT=configserver:http://configserver:8081/
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8070/eureka/
       - I18N_URL=http://dci18n:8080/

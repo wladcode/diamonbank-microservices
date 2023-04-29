@@ -5,9 +5,11 @@ services:
     container_name: configserver
     mem_limit: 700m
     ports:
-      - "8071:8071"
+      - "8082:8081"
     networks:
-      - diamonbank-network
+      - diamonbank_ns
+    environment:
+      SERVER_PORT: 8081
 
   eurekaserver:
     image: ${EUREKA_SERVER_IMAGE}
@@ -16,23 +18,26 @@ services:
     ports:
       - "8070:8070"
     networks:
-      - diamonbank-network
+      - diamonbank_ns
     depends_on:
       - configserver
     deploy:
       restart_policy:
         condition: on-failure
-        delay: 15s
+        delay: 25s
         max_attempts: 3
         window: 120s
     environment:
-      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8081/
+
 
   dci18n:
     image: ${I18N_IMAGE}
     container_name: dci18n
     ports:
       - "9100:8080"
+    networks:
+      - diamonbank_ns
     environment:
       - SPRING_DATASOURCE_URL=${I18N_DATABASE_URL}
       - SPRING_DATASOURCE_USERNAME=${DATABASE_USER}
@@ -43,8 +48,6 @@ services:
           memory: 800M
         reservations:
           memory: 500M
-    networks:
-      - diamonbank-network
 
   accounts:
     image: ${ACCOUNTS_IMAGE}
@@ -61,16 +64,13 @@ services:
       - "5005:5005"
     environment:
       - DEBUG_ENABLED=true
-    networks:
-      - diamonbank-network
+
   loans:
     image: ${LOANS_IMAGE}
     container_name: loans
     mem_limit: 700m
     ports:
       - "8090:8090"
-    networks:
-      - diamonbank-network
     depends_on:
       - configserver
       - eurekaserver
@@ -84,8 +84,6 @@ services:
     mem_limit: 700m
     ports:
       - "9000:9000"
-    networks:
-      - diamonbank-network
     depends_on:
       - configserver
       - eurekaserver
@@ -94,4 +92,4 @@ services:
       service: deploy_area
 
 networks:
-  diamonbank-network:
+  diamonbank_ns:
