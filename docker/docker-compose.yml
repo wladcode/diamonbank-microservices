@@ -72,8 +72,8 @@ services:
       - configserver
       - eurekaserver
   #  extends:
-      file: deploy-area.yml
-      service: deploy_area
+  #    file: deploy-area.yml
+  #    service: deploy_area
   #  ports:
   #    - "9087:9082"
 

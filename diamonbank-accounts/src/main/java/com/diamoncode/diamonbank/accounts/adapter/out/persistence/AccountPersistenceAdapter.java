@@ -1,20 +1,22 @@
 package com.diamoncode.diamonbank.accounts.adapter.out.persistence;
 
-import com.diamoncode.diamonbank.accounts.aplication.port.out.AccountPort;
-import com.diamoncode.diamonbank.accounts.adapter.in.web.feing.CardsFeingClient;
-import com.diamoncode.diamonbank.accounts.adapter.in.web.feing.LoansFeingClient;
+import com.diamoncode.diamonbank.accounts.adapter.in.web.feing.cards.CardsFeingClient;
+import com.diamoncode.diamonbank.accounts.adapter.in.web.feing.loans.LoansFeingClient;
 import com.diamoncode.diamonbank.accounts.adapter.out.persistence.mapper.AccountMapper;
 import com.diamoncode.diamonbank.accounts.adapter.out.persistence.model.JpaEntityAccount;
 import com.diamoncode.diamonbank.accounts.adapter.out.persistence.repository.AccountsRepository;
+import com.diamoncode.diamonbank.accounts.aplication.port.out.AccountPort;
 import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.*;
 import com.diamoncode.diamonbank.accounts.domain.Account;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class AccountPersistenceAdapter implements AccountPort {
@@ -27,6 +29,7 @@ public class AccountPersistenceAdapter implements AccountPort {
     private final CardsFeingClient cardsFeingClient;
 
     private final AccountMapper accountMapper;
+
 
     @Override
     public List<AccountDto> getAccountsByUser(Long userId) {
@@ -47,6 +50,7 @@ public class AccountPersistenceAdapter implements AccountPort {
                 .cards(cards)
                 .build();
     }
+
 
     @Override
     public Account loadAccount(Long accountId, LocalDateTime now) {
