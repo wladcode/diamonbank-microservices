@@ -25,7 +25,6 @@ public class AccountsController extends WebAdapterResponse {
     private final AccountsServiceConfig accountsServiceConfig;
 
 
-
     @GetMapping("/properties")
     public ResponseDTO getProperties() throws JsonProcessingException {
 
@@ -56,7 +55,6 @@ public class AccountsController extends WebAdapterResponse {
         return getResponse("Respuesta obtenida desde I18N", headerName);
 
     }
-
 
 
 }

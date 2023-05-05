@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Objects;
 
-@Configuration
+//@Configuration
 public class DefaultCircuitBreakerPropertiesConfiguration implements BeanPostProcessor {
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
