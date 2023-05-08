@@ -1,4 +1,9 @@
-api-name: "dc-api"
+config:
+  api-name: "dc-api"
+  endpoints:
+    ACCOUNTS: "accounts"
+    LOANS: "loans"
+    CARDS: "cards"
 spring:
   application:
     name: "gatewayserver"
@@ -18,7 +23,7 @@ spring:
     gateway:
       discovery:
         locator:
-          enabled: true
+          #enabled: true
           #lower-case-service-id: true
 
       routes:
@@ -26,22 +31,44 @@ spring:
         - id: accounts-ms
           uri: lb://accounts
           predicates:
-            - Path=/${api-name}/accounts/actuator/**
+            - Path=/${config.api-name}/${config.endpoints.ACCOUNTS}/actuator/**
           filters:
-            - RewritePath=/dc-api/accounts/actuator/(?<segment>.*), /actuator/$\{segment}
+            - RewritePath=/${config.api-name}/${config.endpoints.ACCOUNTS}/actuator/(?<segment>.*), /actuator/$\{segment}
         - id: accounts-ms
           uri: lb://accounts
           predicates:
-            - Path=/dc-api/accounts/**
+            - Path=/${config.api-name}/${config.endpoints.ACCOUNTS}/**
           filters:
-            - RewritePath=/dc-api/accounts/(?<segment>.*), /accounts/$\{segment}
+            - RewritePath=/${config.api-name}/${config.endpoints.ACCOUNTS}/(?<segment>.*), /accounts/$\{segment}
 
         # CONFIG POR LOANS MS
-        #- id: loans-ms
-        #  uri: lb//loans
-        #  predicates:
-        #    - Path=/${api-name}/loans/actuator/**
-        #    -
+        - id: loans-ms
+          uri: lb://loans
+          predicates:
+            - Path=/${config.api-name}/${config.endpoints.LOANS}/actuator/**
+          filters:
+            - RewritePath=/${config.api-name}/${config.endpoints.LOANS}/actuator/(?<segment>.*), /actuator/$\{segment}
+        - id: loans-ms
+          uri: lb://loans
+          predicates:
+            - Path=/${config.api-name}/${config.endpoints.LOANS}/**
+          filters:
+            - RewritePath=/${config.api-name}/${config.endpoints.LOANS}/(?<segment>.*), /loans/$\{segment}
+
+        # CONFIG POR CARDS
+        - id: cards-ms
+          uri: lb://cards
+          predicates:
+            - Path=/${config.api-name}/${config.endpoints.CARDS}/actuator/**
+          filters:
+            - RewritePath=/${config.api-name}/${config.endpoints.CARDS}/actuator/(?<segment>.*), /actuator/$\{segment}
+        - id: cads-ms
+          uri: lb://cards
+          predicates:
+            - Path=/${config.api-name}/${config.endpoints.CARDS}/**
+          filters:
+            - RewritePath=/${config.api-name}/${config.endpoints.CARDS}/(?<segment>.*), /cards/$\{segment}
+
 
 
 
