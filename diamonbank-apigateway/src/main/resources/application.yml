@@ -1,0 +1,94 @@
+api-name: "dc-api"
+spring:
+  application:
+    name: "gatewayserver"
+
+  #########################################################
+  #Properties for configserver
+  #########################################################
+  config:
+    import: optional:configserver:http://localhost:8071/
+  #########################################################
+  #Configuration gateway
+  #########################################################
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          #lower-case-service-id: true
+
+      routes:
+        # CONFIG POR ACCOUNTS MS
+        - id: accounts-ms
+          uri: lb://accounts
+          predicates:
+            - Path=/${api-name}/accounts/actuator/**
+          filters:
+            - RewritePath=/dc-api/accounts/actuator/(?<segment>.*), /actuator/$\{segment}
+        - id: accounts-ms
+          uri: lb://accounts
+          predicates:
+            - Path=/dc-api/accounts/**
+          filters:
+            - RewritePath=/dc-api/accounts/(?<segment>.*), /accounts/$\{segment}
+
+        # CONFIG POR LOANS MS
+        #- id: loans-ms
+        #  uri: lb//loans
+        #  predicates:
+        #    - Path=/${api-name}/loans/actuator/**
+        #    -
+
+
+
+
+#########################################################
+#Actuator endpoint
+#########################################################
+management:
+  # Enables actuator/gateway
+  endpoint:
+    gateway:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "health, info, gateway"
+  # Enables actuator/info
+  info:
+    env:
+      enabled: true
+
+#########################################################
+#Configuration info
+#########################################################
+info:
+  application:
+    name: '@project.name@'
+    description: '@project.description@'
+    version: '@project.version@'
+
+logging:
+  level:
+    com.diamoncode.diamonbankapigateway:
+      DEBUG
+
+server:
+  port: 8099
+
+#########################################################
+#Eureka client configuration
+#########################################################
+eureka:
+  instance:
+    instance-id: '${spring.application.name}: ${random.uuid}'
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8070/eureka/
