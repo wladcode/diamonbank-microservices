@@ -104,5 +104,20 @@ services:
       file: deploy-area.yml
       service: deploy_area
 
+  api_gateway:
+    image: ${APIGATEWAY_IMAGE}
+    container_name: api_gateway
+    mem_limit: 700m
+    ports:
+      - "8099:8099"
+    depends_on:
+      - configserver
+      - eurekaserver
+    environment:
+      - SERVER_PORT=8099
+    extends:
+      file: deploy-area.yml
+      service: deploy_area
+
 networks:
   diamonbank_ns:

@@ -118,7 +118,7 @@ server:
 #########################################################
 eureka:
   instance:
-    instance-id: '${spring.application.name}: ${random.uuid}'
+    instance-id: '${spring.application.name}:${random.uuid}:${server.port}'
     prefer-ip-address: true
   client:
     register-with-eureka: true
