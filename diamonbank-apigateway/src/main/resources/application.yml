@@ -40,6 +40,10 @@ spring:
             - Path=/${config.api-name}/${config.endpoints.ACCOUNTS}/**
           filters:
             - RewritePath=/${config.api-name}/${config.endpoints.ACCOUNTS}/(?<segment>.*), /accounts/$\{segment}
+            - name: AddResponseHeaders
+              args:
+                headers: "CALCULO,MATE"
+                withHeaders: true
 
         # CONFIG POR LOANS MS
         - id: loans-ms
@@ -54,6 +58,7 @@ spring:
             - Path=/${config.api-name}/${config.endpoints.LOANS}/**
           filters:
             - RewritePath=/${config.api-name}/${config.endpoints.LOANS}/(?<segment>.*), /loans/$\{segment}
+            - AddResponseHeaders
 
         # CONFIG POR CARDS
         - id: cards-ms
@@ -101,8 +106,9 @@ info:
 
 logging:
   level:
-    com.diamoncode.diamonbankapigateway:
-      DEBUG
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty.http.client: DEBUG
+    com.diamoncode.diamonbankapigateway: DEBUG
 
 server:
   port: 8099
