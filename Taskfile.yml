@@ -43,7 +43,7 @@ tasks:
       silent: true
   local-image-gateway:
     cmds:
-      - cd diamonbank-apigateway && mvn clean install -DskipTests && mvn spring-boot:build-image
+      - cd diamonbank-apigateway && mvn clean install -Dmaven.test.skip=true && mvn spring-boot:build-image -Dmaven.test.skip=true
     silent: true
 
   
