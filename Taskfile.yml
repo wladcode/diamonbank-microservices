@@ -40,7 +40,7 @@ tasks:
     silent: true
   local-image-loans:
     cmds:
-      - cd diamonbank-loans && docker build -t local/diamoncode-loans:SNAPSHOT .
+      - cd diamonbank-loans && mvn clean install && docker build -t local/diamoncode-loans:SNAPSHOT .
     silent: true
 
   local-image-cards:

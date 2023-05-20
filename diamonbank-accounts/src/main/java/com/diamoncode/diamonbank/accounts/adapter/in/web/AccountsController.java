@@ -9,6 +9,8 @@ import com.diamondcode.common.adapter.in.web.model.ResponseDTO;
 import com.diamondcode.common.adapter.in.web.model.WebAdapterResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(GlobalController.ACCOUNTS_REQUEST_MAPPING)
 @RequiredArgsConstructor
 public class AccountsController extends WebAdapterResponse {
+    private static final Logger logger = LoggerFactory.getLogger(AccountsController.class);
 
     private final AccountsUseCase accountsUseCase;
 
@@ -31,6 +34,8 @@ public class AccountsController extends WebAdapterResponse {
         PropertiesDto properties = new PropertiesDto(accountsServiceConfig.getMsg(), accountsServiceConfig.getBuildVersion()
                 , accountsServiceConfig.getMailDetails(), accountsServiceConfig.getActiveBranches());
 
+        logger.info("Properties found ", properties.toString());
+
         return getResponse("", properties);
 
     }
@@ -39,6 +44,7 @@ public class AccountsController extends WebAdapterResponse {
     @GetMapping("/myAccount/{idAccount}")
     public ResponseDTO getAccountDetails(@PathVariable("idAccount") long idAccount) {
         AccountDto accountDto = accountsUseCase.findById(idAccount);
+        logger.info("acount data ", accountDto.toString());
         return getResponse("", accountDto);
 
     }
@@ -51,6 +57,8 @@ public class AccountsController extends WebAdapterResponse {
         } else {
             headerName = I18nFactory.getInstance().getMessage("header.name", "es");
         }
+
+        logger.info("headerName value ", headerName);
 
         return getResponse("Respuesta obtenida desde I18N", headerName);
 

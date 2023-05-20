@@ -8,6 +8,8 @@ import com.diamoncode.diamonbank.cards.repository.CardsRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +17,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cards")
-public class CardsController {
 
+public class CardsController {
+    private static final Logger  logger = LoggerFactory.getLogger(CardsController.class);
     @Autowired
     private CardsRepository cardsRepository;
 
@@ -28,8 +31,10 @@ public class CardsController {
     public List<JpaEntityCards> getCardDetails(@RequestBody CustomerDto customer) {
         List<JpaEntityCards> cards = cardsRepository.findByCustomerId(customer.getCustomerId());
         if (cards != null) {
+            cards.forEach(card -> logger.info("cards data ", card));
             return cards;
         } else {
+            logger.error("There is no data found ");
             return null;
         }
 
@@ -43,6 +48,8 @@ public class CardsController {
                 , cardsServiceConfig.getMailDetails(), cardsServiceConfig.getActiveBranches());
 
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+
+        logger.error("properties found ", properties.toString());
 
         return ow.writeValueAsString(properties);
 

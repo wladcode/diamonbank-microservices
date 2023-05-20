@@ -44,6 +44,10 @@ public class AccountPersistenceAdapter implements AccountPort {
         List<LoansDto> loans = loansFeingClient.getLoans(customerDto);
         List<CardsDto> cards = cardsFeingClient.getCardDetails(customerDto);
 
+        log.info("acounts ", accounts.size());
+        log.info("loans ", loans.size());
+        log.info("cards ", cards.size());
+
         return ConsolidatePositionDto.builder()
                 .accounts(accountMapper.mapToDomain(accounts))
                 .loans(loans)
@@ -62,8 +66,11 @@ public class AccountPersistenceAdapter implements AccountPort {
         Optional<JpaEntityAccount> account = accountsRepository.findByAccountId(idAccount);
 
         if (account.isPresent()) {
+            log.error("The account for found");
             return accountMapper.mapToDomain(account.get());
         }
+
+        log.error("account by user is null");
         return null;
     }
 }

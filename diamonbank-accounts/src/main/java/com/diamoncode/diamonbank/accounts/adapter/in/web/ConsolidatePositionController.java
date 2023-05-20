@@ -8,6 +8,7 @@ import com.diamondcode.common.adapter.in.web.model.WebAdapterResponse;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import java.util.Arrays;
 @RestController
 @RequestMapping(GlobalController.ACCOUNTS_REQUEST_MAPPING)
 @RequiredArgsConstructor
+@Slf4j
 public class ConsolidatePositionController extends WebAdapterResponse {
 
     private final GetConsolidatePositionUseCase getConsolidatePosition;
@@ -29,17 +31,21 @@ public class ConsolidatePositionController extends WebAdapterResponse {
 
         ConsolidatePositionDto consolidatePositionDto = getConsolidatePosition.getConsolidatePosition(customerId);
 
+        log.info("CONSOLIDATE POSITION ", consolidatePositionDto.toString());
+
         return getResponse("", consolidatePositionDto);
     }
 
     public ResponseDTO fallbackForRetryConsolidate(Long customerId, Throwable throwable) {
-
+        log.error("fallback rate r ");
         throwable.printStackTrace();
         return getResponse("response from fallbackForRetryConsolidate", new ConsolidatePositionDto(null, null, null));
 
     }
 
     public ResponseDTO fallbackForRateLimiterConsolidate(Long customerId, Throwable throwable) {
+
+        log.error("fallback rate limmiter ");
 
         throwable.printStackTrace();
         return getResponse("response from fallbackForRateLimiterConsolidate", new ConsolidatePositionDto(Arrays.asList(), Arrays.asList(), Arrays.asList()));
