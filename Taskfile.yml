@@ -10,9 +10,17 @@ includes:
     taskfile: ./diamonbank-apigateway/Taskfile.yml
     dir: ./diamonbank-apigateway
 tasks:
-  hello:
+  docker-pull-images:
+    dotenv: ['docker/.env_template']
     cmds:
-      - echo 'Hello World from Task!'
+      - docker pull $CONFIG_SERVER_IMAGE
+      - docker pull $EUREKA_SERVER_IMAGE
+      - docker pull $ACCOUNTS_IMAGE
+      - docker pull $LOANS_IMAGE
+      - docker pull $CARDS_IMAGE
+      - docker pull $I18N_IMAGE
+      - docker pull $APIGATEWAY_IMAGE
+      - echo 'All images were downloaded!'
     silent: true
   docker-compose-up:
     cmds:
