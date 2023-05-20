@@ -68,7 +68,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<image>
-                        <name>chamow01/${project.artifactId}:${project.version}</name>
+                        <name>${my-image-name}</name>
 					</image>
 				</configuration>
             </plugin>

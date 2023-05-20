@@ -1,5 +1,14 @@
 version: "3"
-
+includes:
+  accounts:
+    taskfile: ./diamonbank-accounts/Taskfile.yml
+    dir: ./diamonbank-accounts
+  eureka-server:
+    taskfile: ./diamonbank-eureka-server/Taskfile.yml
+    dir: ./diamonbank-eureka-server
+  apigateway:
+    taskfile: ./diamonbank-apigateway/Taskfile.yml
+    dir: ./diamonbank-apigateway
 tasks:
   hello:
     cmds:
@@ -25,10 +34,7 @@ tasks:
     cmds:
       - cd diamonbank-loans && docker build -t local/diamoncode-loans:SNAPSHOT .
     silent: true
-  local-image-accounts:
-    cmds:
-      - cd diamonbank-accounts && mvn clean install && docker build -t local/diamoncode-accounts:SNAPSHOT .
-    silent: true
+
   local-image-cards:
       cmds:
         - cd diamonbank-cards && mvn clean install && mvn spring-boot:build-image
@@ -36,14 +42,6 @@ tasks:
   local-image-config-server:
     cmds:
       - cd diamonbank-config-server && mvn clean install && mvn spring-boot:build-image
-    silent: true
-  local-image-eureka-server:
-      cmds:
-        - cd diamonbank-eureka-server && mvn clean install && mvn spring-boot:build-image
-      silent: true
-  local-image-gateway:
-    cmds:
-      - cd diamonbank-apigateway && mvn clean install -Dmaven.test.skip=true && mvn spring-boot:build-image -Dmaven.test.skip=true
     silent: true
 
   

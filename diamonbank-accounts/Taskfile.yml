@@ -1,0 +1,21 @@
+version: "3"
+
+vars:
+  IMAGE_NAME: diamoncode-accounts
+  LOCAL_IMAGE: local/{{.IMAGE_NAME}}:SNAPSHOT
+  DOCKER_HUB_IMAGE_VERSION: chamow01/{{.IMAGE_NAME}}:v1
+  DOCKER_HUB_IMAGE_FINAL: chamow01/{{.IMAGE_NAME}}:latest
+
+tasks:
+  mvn-clean-install:
+    cmds:
+      - mvn clean install -Dmaven.test.skip=true
+  local-image:
+    cmds:
+      - docker build -t {{.LOCAL_IMAGE}} .
+  docker-hub-image:
+    cmds:
+      - task: mvn-clean-install
+      - docker build -t {{.DOCKER_HUB_IMAGE_VERSION}} .
+      - docker tag {{.DOCKER_HUB_IMAGE_VERSION}} {{.DOCKER_HUB_IMAGE_FINAL}}
+      - docker push {{.DOCKER_HUB_IMAGE_FINAL}}

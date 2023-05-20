@@ -113,11 +113,23 @@ services:
     depends_on:
       - configserver
       - eurekaserver
+      - accounts
+      - loans
+      - cards
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 45s
+        max_attempts: 3
+        window: 180s
+    networks:
+      - diamonbank_ns
     environment:
       - SERVER_PORT=8099
-    extends:
-      file: deploy-area.yml
-      service: deploy_area
+      - SPRING_PROFILES_ACTIVE=${DEPLOY_ENVIRONMENT}
+      - SPRING_CONFIG_IMPORT=configserver:http://configserver:8081/
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8070/eureka/
+      - I18N_URL=http://dci18n:8080/
 
 networks:
   diamonbank_ns:
