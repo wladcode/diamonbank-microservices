@@ -134,25 +134,32 @@ services:
   zipkin:
     image: openzipkin/zipkin
     container_name: zipkin
-    # Environment settings are defined here https://github.com/openzipkin/zipkin/blob/master/zipkin-server/README.md#environment-variables
-    #environment:
-      #- STORAGE_TYPE=mysql
-      # Point the zipkin at the storage backend
-      #- MYSQL_HOST=mysql
-      # Uncomment to enable scribe
-      # - SCRIBE_ENABLED=true
-      # Uncomment to enable self-tracing
-      # - SELF_TRACING_ENABLED=true
-      # Uncomment to enable debug logging
-      # - JAVA_OPTS=-Dlogging.level.zipkin2=DEBUG
     ports:
-      # Port used for the Zipkin UI and HTTP Api
       - "9411:9411"
-      # Uncomment if you set SCRIBE_ENABLED=true
-      # - 9410:9410
-    #depends_on:
-    #  - storage
     networks:
       - diamonbank_ns
+
+  rabbit_server:
+    image: docker.io/bitnami/rabbitmq:3.9
+    container_name: rabbit_server
+    ports:
+      #- '4369:4369'
+      #- '5551:5551'
+      #- '5552:5552'
+      - '5672:5672' #for communication
+      #- '25672:25672'
+      - '15672:15672' #for ui
+    environment:
+      - RABBITMQ_USERNAME=username
+      - RABBITMQ_PASSWORD=password
+    networks:
+      - diamonbank_ns
+    volumes:
+      - 'rabbitmq_bank_data:/bitnami'
+
+volumes:
+  rabbitmq_bank_data:
+    driver: local
 networks:
   diamonbank_ns:
+
