@@ -70,6 +70,12 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-sleuth</artifactId>
 		</dependency>
+
+		<!--FOR LOG AGGREGATION -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-sleuth-zipkin</artifactId>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -93,7 +99,7 @@
 				<configuration>
 					<!-- Cofiguration for creating a docker image using building packs -->
 					<image>
-						<name>chamow01/${project.artifactId}:${project.version}</name>
+						<name>${my-image-name}</name>
 					</image>
 					<excludes>
 						<exclude>

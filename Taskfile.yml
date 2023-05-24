@@ -3,12 +3,22 @@ includes:
   accounts:
     taskfile: ./diamonbank-accounts/Taskfile.yml
     dir: ./diamonbank-accounts
+  cards:
+    taskfile: ./diamonbank-cards/Taskfile.yml
+    dir: ./diamonbank-cards
+  loans:
+      taskfile: ./diamonbank-loans/Taskfile.yml
+      dir: ./diamonbank-loans
+  config-server:
+    taskfile: ./diamonbank-config-server/Taskfile.yml
+    dir: ./diamonbank-config-server
   eureka-server:
     taskfile: ./diamonbank-eureka-server/Taskfile.yml
     dir: ./diamonbank-eureka-server
   apigateway:
     taskfile: ./diamonbank-apigateway/Taskfile.yml
     dir: ./diamonbank-apigateway
+
 tasks:
   docker-pull-images:
     dotenv: ['docker/.env_template']
@@ -37,19 +47,6 @@ tasks:
   docker-compose-down:
     cmds:
       - cd docker && docker compose down
-    silent: true
-  local-image-loans:
-    cmds:
-      - cd diamonbank-loans && mvn clean install && docker build -t local/diamoncode-loans:SNAPSHOT .
-    silent: true
-
-  local-image-cards:
-      cmds:
-        - cd diamonbank-cards && mvn clean install && mvn spring-boot:build-image
-      silent: true
-  local-image-config-server:
-    cmds:
-      - cd diamonbank-config-server && mvn clean install && mvn spring-boot:build-image
     silent: true
 
   

@@ -1,7 +1,7 @@
 version: "3"
 
 vars:
-  IMAGE_NAME: diamonbank-accounts
+  IMAGE_NAME: diamonbank-loans
   LOCAL_IMAGE: local/{{.IMAGE_NAME}}:SNAPSHOT
   DOCKER_HUB_IMAGE_VERSION: chamow01/{{.IMAGE_NAME}}:v1
   DOCKER_HUB_IMAGE_FINAL: chamow01/{{.IMAGE_NAME}}:latest

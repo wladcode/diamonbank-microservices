@@ -73,6 +73,12 @@ spring:
             - Path=/${config.api-name}/${config.endpoints.CARDS}/**
           filters:
             - RewritePath=/${config.api-name}/${config.endpoints.CARDS}/(?<segment>.*), /cards/$\{segment}
+  #USED BY LOG AGREGATION WITH ZIPKIN
+  sleuth:
+    sampler:
+      percentage: 1
+  zipkin:
+    baseUrl: http://localhost/9411/
 
 
 
@@ -125,3 +131,5 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8070/eureka/
+
+
