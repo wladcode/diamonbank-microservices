@@ -1,5 +1,7 @@
 package com.diamoncode.diamonbank.accounts.adapter.in.web;
 
+import com.diamoncode.auditor.AuditorFactory;
+import com.diamoncode.auditor.exception.AuditException;
 import com.diamoncode.diamonbank.accounts.adapter.in.web.config.AccountsServiceConfig;
 import com.diamoncode.diamonbank.accounts.aplication.port.in.AccountsUseCase;
 import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.AccountDto;
@@ -60,7 +62,17 @@ public class AccountsController extends WebAdapterResponse {
 
         logger.info("headerName value ", headerName);
 
-        return getResponse("Respuesta obtenida desde I18N", headerName);
+
+        ResponseDTO responseDTO = getResponse("Respuesta obtenida desde I18N", headerName);
+
+
+        try {
+            AuditorFactory.send(responseDTO.toString());
+        } catch (AuditException e) {
+            logger.error("error sending data to rabbit");
+        }
+
+        return responseDTO;
 
     }
 

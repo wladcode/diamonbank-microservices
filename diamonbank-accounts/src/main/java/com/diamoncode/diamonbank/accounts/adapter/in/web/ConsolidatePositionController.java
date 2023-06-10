@@ -1,5 +1,7 @@
 package com.diamoncode.diamonbank.accounts.adapter.in.web;
 
+import com.diamoncode.auditor.AuditorFactory;
+import com.diamoncode.auditor.exception.AuditException;
 import com.diamoncode.diamonbank.accounts.aplication.port.in.GetConsolidatePositionUseCase;
 import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.AccountDto;
 import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.ConsolidatePositionDto;
@@ -33,7 +35,17 @@ public class ConsolidatePositionController extends WebAdapterResponse {
 
         log.info("CONSOLIDATE POSITION ", consolidatePositionDto.toString());
 
+
+
+
+        try {
+            AuditorFactory.send(consolidatePositionDto.toString());
+        } catch (AuditException e) {
+            logger.error("error sending data to rabbit");
+        }
+
         return getResponse("", consolidatePositionDto);
+
     }
 
     public ResponseDTO fallbackForRetryConsolidate(Long customerId, Throwable throwable) {

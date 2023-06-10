@@ -127,6 +127,12 @@
             <groupId>org.springframework.amqp</groupId>
             <artifactId>spring-rabbit</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.diamoncode</groupId>
+            <artifactId>auditor-ms</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

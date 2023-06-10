@@ -1,5 +1,14 @@
 version: "3.1"
 services:
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    mem_limit: 700m
+    ports:
+      - "9411:9411"
+    networks:
+      - diamonbank_ns
+
   configserver:
     image: ${CONFIG_SERVER_IMAGE}
     container_name: configserver
@@ -8,8 +17,11 @@ services:
       - "8082:8081"
     networks:
       - diamonbank_ns
+    depends_on:
+      - zipkin
     environment:
       SERVER_PORT: 8081
+      SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
   eurekaserver:
     image: ${EUREKA_SERVER_IMAGE}
@@ -29,6 +41,7 @@ services:
         window: 120s
     environment:
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8081/
+      SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
 
   dci18n:
@@ -130,14 +143,6 @@ services:
       - SPRING_CONFIG_IMPORT=configserver:http://configserver:8081/
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8070/eureka/
       - I18N_URL=http://dci18n:8080/
-
-  zipkin:
-    image: openzipkin/zipkin
-    container_name: zipkin
-    ports:
-      - "9411:9411"
-    networks:
-      - diamonbank_ns
 
   rabbit_server:
     image: docker.io/bitnami/rabbitmq:3.9
