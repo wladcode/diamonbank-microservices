@@ -80,12 +80,9 @@ spring:
   zipkin:
     baseUrl: http://localhost/9411/
 
-
-
-
-
 #########################################################
 #Actuator endpoint
+#FOr all endpoints management.endpoints.web.exposure.include=*
 #########################################################
 management:
   # Enables actuator/gateway
@@ -95,7 +92,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: "health, info, gateway"
+        include: "health, info, gateway, prometheus"
   # Enables actuator/info
   info:
     env:

@@ -9,6 +9,7 @@ import com.diamondcode.common.adapter.in.web.model.ResponseDTO;
 import com.diamondcode.common.adapter.in.web.model.WebAdapterResponse;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +30,8 @@ public class ConsolidatePositionController extends WebAdapterResponse {
     @GetMapping("/consolidate/{customerId}")
     //@Retry(name = "retryCosolidation", fallbackMethod = "fallbackForRetryConsolidate")
     @RateLimiter(name = "rateLimiterConsolidate", fallbackMethod = "fallbackForRateLimiterConsolidate")
-    public ResponseDTO getCustomerDetails(@PathVariable("customerId") Long customerId) {
+    @Timed(value = "getPositionConsolidate.time", description = "Time taked to return consolidate position")
+    public ResponseDTO getPositionConsolidate(@PathVariable("customerId") Long customerId) {
 
         ConsolidatePositionDto consolidatePositionDto = getConsolidatePosition.getConsolidatePosition(customerId);
 
