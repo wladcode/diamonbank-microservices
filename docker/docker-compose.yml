@@ -162,6 +162,15 @@ services:
     volumes:
       - 'rabbitmq_bank_data:/bitnami'
 
+  prometheus-server:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - diamonbank_ns
+
 volumes:
   rabbitmq_bank_data:
     driver: local
