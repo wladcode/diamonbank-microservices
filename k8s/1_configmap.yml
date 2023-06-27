@@ -4,6 +4,7 @@ metadata:
   name: diamonbank-configmap
 data:
   ZIPKIN_SPRING_BASEURL: "http://zipkin-service:9411/"
+  MANAGEMENT_ZIPKIN_TRACING_ENDPOINT: http://zipkin-service:9411/api/v2/spans
   SPRING_PROFILES_ACTIVE: "prod"
   SPRING_CONFIG_IMPORT: "configserver:http://configserver-service:8081/"
   CONFIG_SERVER_PORT: "8081"
@@ -14,3 +15,8 @@ data:
   SPRING_RABBITMQ_QUEUE: "rabbit-queue-testing"
   SPRING_RABBITMQ_EXCHANGE: "rabbit-exchange-testing"
   SPRING_RABBITMQ_ROUTING: "rabbit-routing-testing"
+  EUREKA_APPLICATION_NAME: eurekaserver
+  ACCOUNTS_APPLICATION_NAME: accounts
+  LOANS_APPLICATION_NAME: loans
+  CARDS_APPLICATION_NAME: cards
+  GATEWAY_APPLICATION_NAME: gatewayserver

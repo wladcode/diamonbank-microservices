@@ -1,30 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: accounts-deployment
+  name: cards-deployment
   labels:
-    app: accounts
+    app: cards
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: accounts
+      app: cards
   template:
     metadata:
       labels:
-        app: accounts
+        app: cards
     spec:
       containers:
-        - name: accounts
-          image: chamow01/diamonbank-accounts:latest
+        - name: cards
+          image: chamow01/diamonbank-cards:latest
           ports:
-            - containerPort: 9082
+            - containerPort: 9000
           env:
             - name: SPRING_APPLICATION_NAME
               valueFrom:
                 configMapKeyRef:
                   name: diamonbank-configmap
-                  key: ACCOUNTS_APPLICATION_NAME
+                  key: CARDS_APPLICATION_NAME
             - name: MANAGEMENT_ZIPKIN_TRACING_ENDPOINT
               valueFrom:
                 configMapKeyRef:
@@ -50,17 +50,16 @@ spec:
                 configMapKeyRef:
                   name: diamonbank-configmap
                   key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
-
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: accounts-service
+  name: cards-service
 spec:
   selector:
-    app: accounts
+    app: cards
   type: LoadBalancer
   ports:
     - protocol: TCP
-      port: 9082
-      targetPort: 9082
+      port: 9000
+      targetPort: 9000
