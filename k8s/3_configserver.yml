@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: configserver-deployment
+  labels:
+    app: configserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: configserver
+  template:
+    metadata:
+      labels:
+        app: configserver
+    spec:
+      containers:
+        - name: configserver
+          image: chamow01/diamonbank-config-server:latest
+          ports:
+            - containerPort: 8081
+          env:
+            - name: SPRING_ZIPKIN_BASEURL
+              valueFrom:
+                configMapKeyRef:
+                  name: diamonbank-configmap
+                  key: ZIPKIN_SPRING_BASEURL
+            - name: SPRING_PROFILES_ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  name: diamonbank-configmap
+                  key: SPRING_PROFILES_ACTIVE
+            - name: SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: diamonbank-configmap
+                  key: CONFIG_SERVER_PORT
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: configserver-service
+spec:
+  selector:
+    app: configserver
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081
