@@ -25,10 +25,10 @@ kind: Service
 metadata:
   name: zipkin-service
 spec:
-  selector:
-    app: zipkin
   type: LoadBalancer
   ports:
     - protocol: TCP
       port: 9411
       targetPort: 9411
+  selector:
+    app: zipkin

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "diamon-bank.fullname" . }}-test-connection"
+  labels:
+    {{- include "diamon-bank.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "diamon-bank.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
