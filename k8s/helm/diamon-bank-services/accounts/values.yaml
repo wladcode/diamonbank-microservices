@@ -14,12 +14,9 @@ service:
   targetPort: 9082
 
 
-configMap:
-  name: diamonbank-configmap
-  env:
-    SPRING_APPLICATION_NAME: accounts
-    MANAGEMENT_ZIPKIN_TRACING_ENDPOINT:
-    ZIPKIN_SPRING_BASEURL:
-    SPRING_PROFILES_ACTIVE:
-    SPRING_CONFIG_IMPORT:
-    EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:
+services:
+  SPRING_APPLICATION_NAME: accounts
+  zipkin_enabled: true
+  config_enabled: true
+  eureka_enabled: true
+  

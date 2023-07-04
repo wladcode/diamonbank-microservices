@@ -1,0 +1,21 @@
+name: cards
+
+deployment:
+  label: cards-deployment
+  replicaCount: 1
+  image:
+    repository: chamow01/diamonbank-cards
+    version: latest
+  containerPort: 9000
+
+service:
+  type: LoadBalancer
+  port: 9000
+  targetPort: 9000
+
+
+services:
+  SPRING_APPLICATION_NAME: cards
+  zipkin_enabled: true
+  config_enabled: true
+  eureka_enabled: true

@@ -14,9 +14,6 @@ service:
   targetPort: 8070
 
 
-configMap:
-  name: diamonbank-configmap
-  env:
-    ZIPKIN_SPRING_BASEURL:
-    SPRING_PROFILES_ACTIVE:
-    SPRING_CONFIG_IMPORT:
+services:
+  zipkin_enabled: true
+  config_enabled: true

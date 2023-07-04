@@ -1,23 +1,17 @@
+{{- define "common.configmap" -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: { { .Values.global.configMapName } }
+  name: { { .Values.configMap.name } }
 data:
-  ZIPKIN_SPRING_BASEURL: { { .Values.global.ZIPKIN_SPRING_BASEURL } }
-  MANAGEMENT_ZIPKIN_TRACING_ENDPOINT: { { .Values.global.MANAGEMENT_ZIPKIN_TRACING_ENDPOINT } }
-  SPRING_PROFILES_ACTIVE: { { .Values.global.SPRING_PROFILES_ACTIVE } }
-  SPRING_CONFIG_IMPORT: { { .Values.global.CONFIG_SERVER_URL } }
-  CONFIG_SERVER_PORT: { { .Values.global.CONFIG_SERVER_PORT } }
-  EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: { { .Values.global.EUREKA_SERVER_URL } }
-  I18N_URL: { { .Values.global.I18N_URL } }
-  APIGW_SERVER_PORT: { { .Values.global.APIGW_SERVER_PORT } }
-  SPRING_RABBITMQ_HOST: { { .Values.global.SPRING_RABBITMQ_HOST } }
-  SPRING_RABBITMQ_QUEUE: { { .Values.global.SPRING_RABBITMQ_QUEUE } }
-  SPRING_RABBITMQ_EXCHANGE: { { .Values.global.SPRING_RABBITMQ_EXCHANGE } }
-  SPRING_RABBITMQ_ROUTING: { { .Values.global.SPRING_RABBITMQ_ROUTING } }
-  EUREKA_APPLICATION_NAME: { { .Values.global.EUREKA_APPLICATION_NAME } }
-  ACCOUNTS_APPLICATION_NAME: { { .Values.global.ACCOUNTS_APPLICATION_NAME } }
-  LOANS_APPLICATION_NAME: { { .Values.global.LOANS_APPLICATION_NAME } }
-  CARDS_APPLICATION_NAME: { { .Values.global.CARDS_APPLICATION_NAME } }
-  GATEWAY_APPLICATION_NAME: { { .Values.global.GATEWAY_APPLICATION_NAME } }
-  
+  ZIPKIN_SPRING_BASEURL: { { .Values.configMap.env.ZIPKIN_SPRING_BASEURL } }
+  MANAGEMENT_ZIPKIN_TRACING_ENDPOINT: { { .Values.configMap.env.MANAGEMENT_ZIPKIN_TRACING_ENDPOINT } }
+  SPRING_PROFILES_ACTIVE: { { .Values.configMap.env.SPRING_PROFILES_ACTIVE } }
+  SPRING_CONFIG_IMPORT: { { .Values.configMap.env.CONFIG_SERVER_URL } }
+  EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: { { .Values.configMap.env.EUREKA_SERVER_URL } }
+  I18N_URL: { { .Values.configMap.env.I18N_URL } }
+  SPRING_RABBITMQ_HOST: { { .Values.configMap.env.SPRING_RABBITMQ_HOST } }
+  SPRING_RABBITMQ_QUEUE: { { .Values.configMap.env.SPRING_RABBITMQ_QUEUE } }
+  SPRING_RABBITMQ_EXCHANGE: { { .Values.configMap.env.SPRING_RABBITMQ_EXCHANGE } }
+  SPRING_RABBITMQ_ROUTING: { { .Values.configMap.env.SPRING_RABBITMQ_ROUTING } }
+{{- end -}}

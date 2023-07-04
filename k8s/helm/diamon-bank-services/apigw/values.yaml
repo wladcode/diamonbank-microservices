@@ -14,15 +14,11 @@ service:
   targetPort: 8099
 
 
-configMap:
-  name: diamonbank-configmap
-  env:
-    SPRING_SERVER_PORT: 8099
-    SPRING_APPLICATION_NAME: gatewayserver
-    MANAGEMENT_ZIPKIN_TRACING_ENDPOINT: http://zipkin-service:9411/api/v2/spans
-    ZIPKIN_SPRING_BASEURL: "http://zipkin-service:9411/"
-    SPRING_PROFILES_ACTIVE: "prod"
-    SPRING_CONFIG_IMPORT: "configserver:http://configserver-service:8081/"
-    EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eurekaserver-service:8070/eureka/"
+services:
+  SPRING_APPLICATION_NAME: gatewayserver
+  SPRING_SERVER_PORT: 8099
+  zipkin_enabled: true
+  config_enabled: true
+  eureka_enabled: true
     
 

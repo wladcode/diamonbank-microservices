@@ -1,0 +1,21 @@
+name: loans
+
+deployment:
+  label: loans-deployment
+  replicaCount: 1
+  image:
+    repository: chamow01/diamonbank-loans
+    version: latest
+  containerPort: 8090
+
+service:
+  type: LoadBalancer
+  port: 8090
+  targetPort: 8090
+
+
+services:
+  SPRING_APPLICATION_NAME: loans
+  zipkin_enabled: true
+  config_enabled: true
+  eureka_enabled: true
