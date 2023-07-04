@@ -1,8 +1,5 @@
 name: accounts
 
-global:
-  configName: diamonbank-configmap
-
 deployment:
   label: accounts-deployment
   replicaCount: 1
@@ -10,9 +7,19 @@ deployment:
     repository: chamow01/diamonbank-accounts
     version: latest
   containerPort: 9082
-  SPRING_APPLICATION_NAME: accounts
 
 service:
   type: LoadBalancer
   port: 9082
   targetPort: 9082
+
+
+configMap:
+  name: diamonbank-configmap
+  env:
+    SPRING_APPLICATION_NAME: accounts
+    MANAGEMENT_ZIPKIN_TRACING_ENDPOINT:
+    ZIPKIN_SPRING_BASEURL:
+    SPRING_PROFILES_ACTIVE:
+    SPRING_CONFIG_IMPORT:
+    EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:

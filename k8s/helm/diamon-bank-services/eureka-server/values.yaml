@@ -1,0 +1,22 @@
+name: eureka-server
+
+deployment:
+  label: eureka-server-deployment
+  replicaCount: 1
+  image:
+    repository: chamow01/diamonbank-eureka-server
+    version: latest
+  containerPort: 8070
+
+service:
+  type: LoadBalancer
+  port: 8070
+  targetPort: 8070
+
+
+configMap:
+  name: diamonbank-configmap
+  env:
+    ZIPKIN_SPRING_BASEURL:
+    SPRING_PROFILES_ACTIVE:
+    SPRING_CONFIG_IMPORT:

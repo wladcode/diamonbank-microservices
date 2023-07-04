@@ -1,0 +1,18 @@
+name: zipkin
+
+deployment:
+  label: zipkin-deployment
+  replicaCount: 1
+  image:
+    repository: openzipkin/zipkin
+    version: latest
+  containerPort: 9411
+
+service:
+  type: LoadBalancer
+  port: 9411
+  targetPort: 9411
+
+
+configMap:
+  name: diamonbank-configmap

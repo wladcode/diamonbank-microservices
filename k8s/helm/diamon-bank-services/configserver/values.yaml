@@ -1,0 +1,22 @@
+name: configserver
+
+deployment:
+  label: configserver-deployment
+  replicaCount: 1
+  image:
+    repository: chamow01/diamonbank-config-server
+    version: latest
+  containerPort: 8081
+
+service:
+  type: LoadBalancer
+  port: 8081
+  targetPort: 8081
+
+
+configMap:
+  name: diamonbank-configmap
+  env:
+    SPRING_SERVER_PORT: 8081
+    ZIPKIN_SPRING_BASEURL:
+    SPRING_PROFILES_ACTIVE:
