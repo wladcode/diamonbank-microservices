@@ -1,37 +1,34 @@
+{{- define "common.deployment" -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: { { .Values.deploymentName } }
+  name: { { .Values.name } }
   labels:
-    app: { { .Values.deploymentLabel } }
+    app: { { .Values.deployment.label } }
 spec:
   replicas: { { .Values.replicaCount } }
   selector:
     matchLabels:
-      app: { { .Values.deploymentLabel } }
+      app: { { .Values.name } }
   template:
     metadata:
       labels:
-        app: { { .Values.deploymentLabel } }
+        app: { { .Values.name } }
     spec:
       containers:
-        - name: { { .Values.deploymentLabel } }
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        - name: { { .Values.name } }
+          image: "{{ .Values.deployment.image.repository }}:{{ .Values.deployment.image.tag }}"
           ports:
-            - containerPort: { { .Values.containerPort } }
+            - containerPort: { { .Values.deployment.containerPort } }
               protocol: TCP
           env:
+            { { - if .Values.deployment.SPRING_APPLICATION_NAME } }
             - name: SPRING_APPLICATION_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: { { .Values.global.configMapName } }
-                  key: { { .Values.deploymentName } }
-            { { - if .Values.custom.serverPort } }
+              value: { { .Values.deployment.SPRING_APPLICATION_NAME } }
+            { { - end } }
+            { { - if .Values.deployment.SPRING_SERVER_PORT } }
             - name: SERVER_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: { { .Values.global.configMapName } }
-                  key: { { .Values.custom.serverPort } }
+              value: { { .Values.deployment.SPRING_SERVER_PORT } }
             { { - end } }
             { { - if .Values.zipkin_enabled } }
             - name: MANAGEMENT_ZIPKIN_TRACING_ENDPOINT
@@ -66,3 +63,4 @@ spec:
                   name: { { .Values.global.configMapName } }
                   key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
             { { - end } }
+{{ - end }}
