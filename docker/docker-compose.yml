@@ -96,7 +96,7 @@ services:
     container_name: loans
     mem_limit: 700m
     ports:
-      - "8090:8090"
+      - "8097:8090"
     depends_on:
       - configserver
       - eurekaserver
@@ -151,9 +151,9 @@ services:
       #- '4369:4369'
       #- '5551:5551'
       #- '5552:5552'
-      - '5672:5672' #for communication
+      - '5674:5672' #for communication
       #- '25672:25672'
-      - '15672:15672' #for ui
+      - '15673:15672' #for ui
     environment:
       - RABBITMQ_USERNAME=username
       - RABBITMQ_PASSWORD=password
@@ -176,7 +176,7 @@ services:
     image: grafana/grafana:latest
     container_name: grafana-server
     ports:
-      - "3000:3000"
+      - "3010:3000"
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=password
