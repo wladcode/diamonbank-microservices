@@ -1,0 +1,6 @@
+dependencies:
+- name: diamon-bank-common
+  repository: file://../../diamon-bank-common
+  version: 1.0.0
+digest: sha256:4e75703d0f24ea02b79a44e4c4f812c6a9a75a2d79004315a626ce494e9ded34
+generated: "2023-07-03T23:49:05.173305561-05:00"

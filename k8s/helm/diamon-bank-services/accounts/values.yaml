@@ -1,0 +1,18 @@
+name: accounts
+
+global:
+  configName: diamonbank-configmap
+
+deployment:
+  label: accounts-deployment
+  replicaCount: 1
+  image:
+    repository: chamow01/diamonbank-accounts
+    version: latest
+  containerPort: 9082
+  SPRING_APPLICATION_NAME: accounts
+
+service:
+  type: LoadBalancer
+  port: 9082
+  targetPort: 9082
