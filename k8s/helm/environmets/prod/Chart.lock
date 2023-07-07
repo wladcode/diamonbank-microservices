@@ -1,0 +1,27 @@
+dependencies:
+- name: diamon-bank-common
+  repository: file://../../diamon-bank-common
+  version: 1.0.0
+- name: zipkin
+  repository: file://../../diamon-bank-services/zipkin
+  version: 0.1.0
+- name: configserver
+  repository: file://../../diamon-bank-services/configserver
+  version: 0.1.0
+- name: eureka-server
+  repository: file://../../diamon-bank-services/eureka-server
+  version: 0.1.0
+- name: accounts
+  repository: file://../../diamon-bank-services/accounts
+  version: 0.1.0
+- name: loans
+  repository: file://../../diamon-bank-services/loans
+  version: 0.1.0
+- name: cards
+  repository: file://../../diamon-bank-services/cards
+  version: 0.1.0
+- name: apigw
+  repository: file://../../diamon-bank-services/apigw
+  version: 0.1.0
+digest: sha256:336958e97b5e5b8f1fbbb485548ce5b3230721a0dfef454bc1dc959beec2c5c1
+generated: "2023-07-06T22:15:53.143462558-05:00"

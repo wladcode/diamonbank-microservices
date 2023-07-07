@@ -1,0 +1,13 @@
+global:
+  configMapName: diamonbank-configmap
+  env:
+    SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
+    MANAGEMENT_ZIPKIN_TRACING_ENDPOINT: http://zipkin-service:9411/api/v2/spans
+    SPRING_PROFILES_ACTIVE: dev
+    SPRING_CONFIG_IMPORT: configserver:http://configserver-service:8081/
+    EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver-service:8070/eureka/
+    #I18N_URL: {{ .Values.configMap.env.I18N_URL }}
+    SPRING_RABBITMQ_HOST: "rabbit_server"
+    SPRING_RABBITMQ_QUEUE: "rabbit-queue-testing"
+    SPRING_RABBITMQ_EXCHANGE: "rabbit-exchange-testing"
+    SPRING_RABBITMQ_ROUTING: "rabbit-routing-testing"
