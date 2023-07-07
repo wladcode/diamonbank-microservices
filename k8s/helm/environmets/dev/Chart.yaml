@@ -35,5 +35,23 @@ dependencies:
     version: 0.1.0
     repository: file://../../diamon-bank-services/configserver
 
+  - name: eureka-server
+    version: 0.1.0
+    repository: file://../../diamon-bank-services/eureka-server
 
+  - name: accounts
+    version: 0.1.0
+    repository: file://../../diamon-bank-services/accounts
+
+  - name: loans
+    version: 0.1.0
+    repository: file://../../diamon-bank-services/loans
+
+  - name: cards
+    version: 0.1.0
+    repository: file://../../diamon-bank-services/cards
+
+  - name: apigw
+    version: 0.1.0
+    repository: file://../../diamon-bank-services/apigw
 
