@@ -32,3 +32,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+# Helm stuff
+*.tgz
+requirements.lock
+Chart.lock
