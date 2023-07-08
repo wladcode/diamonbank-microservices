@@ -1,15 +1,17 @@
 name: zipkin
+targetPort: 9411
 
 deployment:
-  label: zipkin-deployment
+  label: zipkin
   replicaCount: 1
+
+containers:
   image:
     repository: openzipkin/zipkin
     version: latest
-  containerPort: 9411
 
 service:
   type: LoadBalancer
   port: 9411
-  targetPort: 9411
+
 

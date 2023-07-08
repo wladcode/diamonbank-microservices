@@ -34,24 +34,29 @@ dependencies:
   - name: configserver
     version: 0.1.0
     repository: file://../../diamon-bank-services/configserver
+    condition: configserver.enabled
 
   - name: eureka-server
     version: 0.1.0
     repository: file://../../diamon-bank-services/eureka-server
+    condition: eureka-server.enabled
 
   - name: accounts
     version: 0.1.0
     repository: file://../../diamon-bank-services/accounts
+    condition: accounts.enabled
 
   - name: loans
     version: 0.1.0
     repository: file://../../diamon-bank-services/loans
+    condition: loans.enabled
 
   - name: cards
     version: 0.1.0
     repository: file://../../diamon-bank-services/cards
+    condition: cards.enabled
 
   - name: apigw
     version: 0.1.0
     repository: file://../../diamon-bank-services/apigw
-
+    condition: apigw.enabled

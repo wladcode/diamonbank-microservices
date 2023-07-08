@@ -2,24 +2,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.name }}
+  name: "{{ .Values.name }}-deployment"
   labels:
     app: {{ .Values.deployment.label }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.deployment.replicaCount }}
   selector:
     matchLabels:
       app: {{ .Values.name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.name }}
+        app: {{ .Values.deployment.label }}
     spec:
       containers:
-      - name: {{ .Values.name }}
-        image: "{{ .Values.deployment.image.repository }}:{{ .Values.deployment.image.tag }}"
+      - name: "{{ .Values.name }}-container"
+        image: "{{ .Values.containers.image.repository }}:{{ .Values.containers.image.version }}"
         ports:
-        - containerPort: {{ .Values.deployment.containerPort }}
+        - containerPort: {{ .Values.targetPort }}
           protocol: TCP
         {{- if .Values.services}}
         env:
@@ -29,7 +29,7 @@ spec:
         {{- end }}
         {{- if .Values.services.SPRING_SERVER_PORT }}
         - name: SERVER_PORT
-          value: {{ .Values.services.SPRING_SERVER_PORT }}
+          value: "{{ .Values.services.SPRING_SERVER_PORT }}"
         {{- end }}
         {{- if .Values.services.zipkin_enabled }}
         - name: MANAGEMENT_ZIPKIN_TRACING_ENDPOINT
@@ -43,12 +43,12 @@ spec:
               name: {{ .Values.global.configMapName }}
               key: SPRING_ZIPKIN_BASEURL
         {{- end }}
-        {{- if .Values.services.config_enabled }}
         - name: SPRING_PROFILES_ACTIVE
           valueFrom:
             configMapKeyRef:
               name: {{ .Values.global.configMapName }}
               key: SPRING_PROFILES_ACTIVE
+        {{- if .Values.services.config_enabled }}
         - name: SPRING_CONFIG_IMPORT
           valueFrom:
             configMapKeyRef:

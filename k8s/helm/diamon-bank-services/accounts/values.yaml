@@ -1,17 +1,18 @@
 name: accounts
+targetPort: 9082
 
 deployment:
-  label: accounts-deployment
+  label: accounts
   replicaCount: 1
+
+containers:
   image:
     repository: chamow01/diamonbank-accounts
     version: latest
-  containerPort: 9082
 
 service:
   type: LoadBalancer
   port: 9082
-  targetPort: 9082
 
 
 services:

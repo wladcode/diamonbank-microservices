@@ -1,17 +1,18 @@
 name: cards
+targetPort: 9000
 
 deployment:
-  label: cards-deployment
+  label: cards
   replicaCount: 1
+
+containers:
   image:
     repository: chamow01/diamonbank-cards
     version: latest
-  containerPort: 9000
 
 service:
   type: LoadBalancer
   port: 9000
-  targetPort: 9000
 
 
 services:

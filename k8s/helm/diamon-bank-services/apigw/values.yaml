@@ -1,17 +1,18 @@
 name: gatewayserver
+targetPort: 8099
 
 deployment:
-  label: gatewayserver-deployment
+  label: gatewayserver
   replicaCount: 1
+
+containers:
   image:
     repository: chamow01/diamonbank-apigateway
     version: latest
-  containerPort: 8099
 
 service:
   type: LoadBalancer
   port: 8099
-  targetPort: 8099
 
 
 services:

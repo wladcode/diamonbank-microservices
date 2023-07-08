@@ -1,17 +1,18 @@
-name: eureka-server
+name: eurekaserver
+targetPort: 8070
 
 deployment:
-  label: eureka-server-deployment
+  label: eurekaserver
   replicaCount: 1
+
+containers:
   image:
     repository: chamow01/diamonbank-eureka-server
     version: latest
-  containerPort: 8070
 
 service:
   type: LoadBalancer
   port: 8070
-  targetPort: 8070
 
 
 services:
