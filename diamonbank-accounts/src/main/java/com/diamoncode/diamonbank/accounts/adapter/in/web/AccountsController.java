@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+import java.util.Optional;
+
 
 @RestController
 @RequestMapping(GlobalController.ACCOUNTS_REQUEST_MAPPING)
@@ -29,6 +32,19 @@ public class AccountsController extends WebAdapterResponse {
 
     private final AccountsServiceConfig accountsServiceConfig;
 
+
+    @GetMapping("/getHost")
+    public ResponseDTO getHost() throws JsonProcessingException {
+
+        Optional<String> podName = Optional.ofNullable(System.getenv("HOSTNAME"));
+        Map<String, String> variables = System.getenv();
+
+        String greeting = "Welcome to K8S cluster from " + variables;
+        logger.info(greeting);
+
+        return getResponse("", greeting);
+
+    }
 
     @GetMapping("/properties")
     public ResponseDTO getProperties() throws JsonProcessingException {
