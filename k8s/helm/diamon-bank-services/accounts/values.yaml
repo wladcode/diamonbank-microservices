@@ -11,8 +11,9 @@ containers:
     version: latest
 
 service:
-  type: ClusterIP
+  type: NodePort
   port: 9082
+  nodePort: 32222
 
 
 services:
