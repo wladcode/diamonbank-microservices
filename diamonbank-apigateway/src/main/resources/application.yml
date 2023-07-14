@@ -9,6 +9,15 @@ spring:
     name: "gatewayserver"
 
   #########################################################
+  #Properties for security
+  #########################################################
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:7080/realms/master/protocol/openid-connect/certs
+
+  #########################################################
   #Properties for configserver
   #########################################################
   config:
