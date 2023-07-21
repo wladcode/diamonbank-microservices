@@ -12,9 +12,12 @@ public class SecurityConfig {
 
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-        http.authorizeExchange(exchanges -> exchanges.pathMatchers("/dc-api/accounts/**").authenticated()
+        http.authorizeExchange(exchanges -> exchanges
+                .pathMatchers("/actuator/**").permitAll()
+                .pathMatchers("/dc-api/accounts/**").authenticated()
                 .pathMatchers("/dc-api/cards/**").authenticated()
                 .pathMatchers("/dc-api/loans/**").permitAll()
+
         ).oauth2ResourceServer().jwt();
 
         http.csrf().disable();

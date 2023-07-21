@@ -13,10 +13,10 @@ tasks:
   local-image:
     cmds:
       - task: mvn-clean-install
-      - mvn spring-boot:build-image -Dmy-image-name={{.LOCAL_IMAGE}} -Dmaven.test.skip=true
+      - docker build -t {{.LOCAL_IMAGE}} .
   docker-hub-image:
     cmds:
       - task: mvn-clean-install
-      - mvn spring-boot:build-image -Dmy-image-name={{.DOCKER_HUB_IMAGE_VERSION}} -Dmaven.test.skip=true
+      - docker build -t {{.DOCKER_HUB_IMAGE_VERSION}} .
       - docker tag {{.DOCKER_HUB_IMAGE_VERSION}} {{.DOCKER_HUB_IMAGE_FINAL}}
       - docker push {{.DOCKER_HUB_IMAGE_FINAL}}

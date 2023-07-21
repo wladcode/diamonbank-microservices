@@ -1,3 +1,4 @@
+
 config:
   api-name: "dc-api"
   endpoints:
@@ -15,7 +16,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:7080/realms/master/protocol/openid-connect/certs
+          issuer-uri: http://localhost:7080/realms/diamon-bank
+          jwk-set-uri: http://localhost:7080/realms/diamon-bank/protocol/openid-connect/certs
 
   #########################################################
   #Properties for configserver
@@ -87,7 +89,7 @@ spring:
     sampler:
       percentage: 1
   zipkin:
-    baseUrl: http://localhost/9411/
+    baseUrl: http://localhost:9411/
 
 #########################################################
 #Actuator endpoint
@@ -118,6 +120,8 @@ info:
 
 logging:
   level:
+    root: DEBUG
+    org.springframework: DEBUG
     org.springframework.cloud.gateway: DEBUG
     reactor.netty.http.client: DEBUG
     com.diamoncode.diamonbankapigateway: DEBUG

@@ -33,6 +33,7 @@ services:
       - diamonbank_ns
     depends_on:
       - configserver
+      - zipkin
     deploy:
       restart_policy:
         condition: on-failure
@@ -123,12 +124,16 @@ services:
     mem_limit: 700m
     ports:
       - "8099:8099"
+      - "5006:5005"
     depends_on:
       - configserver
       - eurekaserver
       - accounts
       - loans
       - cards
+      - dci18n
+      - keycloak_server
+      - zipkin
     deploy:
       restart_policy:
         condition: on-failure
@@ -143,6 +148,9 @@ services:
       - SPRING_CONFIG_IMPORT=configserver:http://configserver:8081/
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8070/eureka/
       - I18N_URL=http://dci18n:8080/
+      - DEBUG_ENABLED=true
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak_server:7080/realms/diamon-bank/protocol/openid-connect/certs
+      - SPRING_ZIPKIN_BASEURL=http://zipkin:9411/
 
   rabbit_server:
     image: docker.io/bitnami/rabbitmq:3.9
@@ -184,6 +192,20 @@ services:
       - diamonbank_ns
     depends_on:
       - prometheus-server
+
+  keycloak_server:
+    image: quay.io/keycloak/keycloak:22.0.0
+    container_name:  keycloak_server
+    command: start-dev --http-port=7080
+    ports:
+      - "7080:7080"
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    volumes:
+      - '/home/wllopez/dev/tools/keycloak-data/:/opt/keycloak/data/h2'
+    networks:
+      - diamonbank_ns
 
 volumes:
   rabbitmq_bank_data:

@@ -172,8 +172,9 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <!-- Cofiguration for creating a docker image -->
-                    <!--<image>
-                        <name>chamow01/${project.artifactId}</name>
+                    <!--
+                    <image>
+                        <name>${my-image-name}</name>
                     </image>
                     -->
                     <layers>
