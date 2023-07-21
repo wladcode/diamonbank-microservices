@@ -6,6 +6,7 @@ global:
     SPRING_PROFILES_ACTIVE: "prod"
     SPRING_CONFIG_IMPORT: "configserver:http://configserver-service:8081/"
     EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eurekaserver-service:8070/eureka/"
+    KEY_CLOAK_URL: "http://my-release-keycloak:80/realms/diamon-bank/protocol/openid-connect/certs"
     #I18N_URL: "http://dci18n:8080/"
     SPRING_RABBITMQ_HOST: "rabbit_server"
     SPRING_RABBITMQ_QUEUE: "rabbit-queue-testing"

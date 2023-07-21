@@ -21,5 +21,6 @@ services:
   zipkin_enabled: true
   config_enabled: true
   eureka_enabled: true
+  keycloak_enabled: true
     
 
