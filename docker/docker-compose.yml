@@ -149,8 +149,12 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8070/eureka/
       - I18N_URL=http://dci18n:8080/
       - DEBUG_ENABLED=true
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak_server:7080/realms/diamon-bank/protocol/openid-connect/certs
       - SPRING_ZIPKIN_BASEURL=http://zipkin:9411/
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_TOKEN_URI=http://keycloak_server:7080/realms/master/protocol/openid-connect/token
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_USER_INFO_URI=http://keycloak_server:7080/realms/master/protocol/openid-connect/userinfo
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_AUTHORIZATION_URI=http://localhost:7080/realms/master/protocol/openid-connect/auth
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_DIAMONCODEBANK_CLIENT_SECRET=7FtQvG7bNiIXlTXACX9KBmC14zaPdDTx
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_DIAMONCODEBANK_SCOPE=openid
 
   rabbit_server:
     image: docker.io/bitnami/rabbitmq:3.9

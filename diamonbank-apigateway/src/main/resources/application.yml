@@ -1,10 +1,10 @@
-
 config:
   api-name: "dc-api"
   endpoints:
     ACCOUNTS: "accounts"
     LOANS: "loans"
     CARDS: "cards"
+
 spring:
   application:
     name: "gatewayserver"
@@ -14,10 +14,21 @@ spring:
   #########################################################
   security:
     oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:7080/realms/diamon-bank
-          jwk-set-uri: http://localhost:7080/realms/diamon-bank/protocol/openid-connect/certs
+      client:
+        provider:
+          keycloak:
+            token-uri: http://localhost:7080/realms/master/protocol/openid-connect/token
+            authorization-uri: http://localhost:7080/realms/master/protocol/openid-connect/auth
+            user-info-uri: http://localhost:7080/realms/master/protocol/openid-connect/userinfo
+            user-name-attribute: preferred_username
+        registration:
+          diamoncodebank:
+            provider: keycloak
+            scope: openid
+            client-id: diamonbank-gateway-ui
+            client-secret: 7FtQvG7bNiIXlTXACX9KBmC14zaPdDTx
+            authorization-grant-type: authorization_code
+            redirect-uri: '{baseUrl}get'
 
   #########################################################
   #Properties for configserver
@@ -34,8 +45,8 @@ spring:
     gateway:
       discovery:
         locator:
-          #enabled: true
-          #lower-case-service-id: true
+        #enabled: true
+        #lower-case-service-id: true
 
       routes:
         # CONFIG POR ACCOUNTS MS
@@ -45,6 +56,8 @@ spring:
             - Path=/${config.api-name}/${config.endpoints.ACCOUNTS}/actuator/**
           filters:
             - RewritePath=/${config.api-name}/${config.endpoints.ACCOUNTS}/actuator/(?<segment>.*), /actuator/$\{segment}
+            - RemoveRequestHeader=Cookie
+            - TokenRelay=
         - id: accounts-ms
           uri: lb://accounts
           predicates:

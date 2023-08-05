@@ -21,3 +21,4 @@ services:
       - SPRING_RABBITMQ_QUEUE=rabbit-queue-testing
       - SPRING_RABBITMQ_EXCHANGE=rabbit-exchange-testing
       - SPRING_RABBITMQ_ROUTING=rabbit-routing-testing
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak_server:7080/realms/master/protocol/openid-connect/certs
