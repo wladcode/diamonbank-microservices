@@ -21,4 +21,5 @@ services:
   zipkin_enabled: true
   config_enabled: true
   eureka_enabled: true
+  resourceserver_enabled: true
   

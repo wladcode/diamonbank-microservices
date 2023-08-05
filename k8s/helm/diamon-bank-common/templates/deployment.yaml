@@ -62,12 +62,39 @@ spec:
               name: {{ .Values.global.configMapName }}
               key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
         {{- end }}
-        { { - if .Values.services.keycloak_enabled } }
+        { { - if .Values.services.resourceserver_enabled }}
         - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI
           valueFrom:
             configMapKeyRef:
-              name: { { .Values.global.configMapName } }
+              name: {{ .Values.global.configMapName }}
               key: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI
-        { { - end } }
+        {{ - end }}
+        {{ - if .Values.services.keycloak_enabled }}
+        - name: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_TOKEN_URI
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_TOKEN_URI
+        - name: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_AUTHORIZATION_URI
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_AUTHORIZATION_URI
+        - name: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_USER_INFO_URI
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_USER_INFO_URI
+        - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_DIAMONCODEBANK_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.global.secretName }}
+              key: KEY_CLOAK_CLIENT_ID
+        - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_DIAMONCODEBANK_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: { { .Values.global.secretName } }
+              key: KEY_CLOAK_CLIENT_SECRET
+        {{ - end }}
         {{- end }}
 {{- end -}}
