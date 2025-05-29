@@ -1,0 +1,37 @@
+encrypt:
+  key-store:
+    alias: config-server-key
+    location: security/config-server.jks
+    password: st0res3cr3t1cs
+    secret: d14monb4nk-20dos
+server:
+  port: 8071
+spring:
+  application:
+    name: configserver
+  cloud:
+    config:
+      server:
+        git:
+          clone-on-start: true
+          default-label: master
+          force-pull: true
+          uri: https://github.com/chamoW/diamonbank-microservices-config.git
+          # uri: https://github.com/giancarlolm/service-configuration
+
+  profiles:
+    active: git
+  rabbitmq:
+    host: localhost
+    password: password
+    port: 5672
+    username: username
+  sleuth:
+    sampler:
+      probability: 1
+  zipkin:
+    baseUrl: http://localhost:9411/
+    rabbitmq:
+      queue: from-zipkin
+    sender:
+      type: rabbit

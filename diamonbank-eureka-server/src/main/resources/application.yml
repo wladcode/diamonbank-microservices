@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: eurekaserver
+  cloud:
+    config:
+      profile: dev
+    loadbalancer:
+      ribbon:
+        enabled: false
+  rabbitmq:
+    host: localhost
+    password: password
+    port: 5672
+    username: username
+  sleuth:
+    sampler:
+      probability: 1
+  zipkin:
+    baseUrl: http://localhost:9411/
+    rabbitmq:
+      queue: from-zipkin
+    sender:
+      type: rabbit
