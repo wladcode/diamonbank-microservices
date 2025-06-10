@@ -1,7 +1,9 @@
 package com.diamoncode.diamonbank.accounts.adapter.out.persistence;
 
+import com.diamoncode.diamonbank.accounts.adapter.in.web.exception.AccountNotFoundException;
 import com.diamoncode.diamonbank.accounts.adapter.in.web.feing.cards.CardsFeingClient;
 import com.diamoncode.diamonbank.accounts.adapter.in.web.feing.loans.LoansFeingClient;
+import com.diamoncode.diamonbank.accounts.adapter.in.web.feing.product.ProductClient;
 import com.diamoncode.diamonbank.accounts.adapter.out.persistence.mapper.AccountMapper;
 import com.diamoncode.diamonbank.accounts.adapter.out.persistence.model.JpaEntityAccount;
 import com.diamoncode.diamonbank.accounts.adapter.out.persistence.repository.AccountsRepository;
@@ -27,6 +29,7 @@ public class AccountPersistenceAdapter implements AccountPort {
     private final LoansFeingClient loansFeingClient;
 
     private final CardsFeingClient cardsFeingClient;
+    private final ProductClient productClient;
 
     private final AccountMapper accountMapper;
 
@@ -43,6 +46,7 @@ public class AccountPersistenceAdapter implements AccountPort {
         List<JpaEntityAccount> accounts = accountsRepository.findByCustomerId(accountId);
         List<LoansDto> loans = loansFeingClient.getLoans(customerDto);
         List<CardsDto> cards = cardsFeingClient.getCardDetails(customerDto);
+        ProductDto productById = productClient.getProductById(accountId);
 
         log.info("acounts ", accounts.size());
         log.info("loans ", loans.size());
@@ -52,6 +56,7 @@ public class AccountPersistenceAdapter implements AccountPort {
                 .accounts(accountMapper.mapToDomain(accounts))
                 .loans(loans)
                 .cards(cards)
+                .product(productById)
                 .build();
     }
 
@@ -70,7 +75,7 @@ public class AccountPersistenceAdapter implements AccountPort {
             return accountMapper.mapToDomain(account.get());
         }
 
-        log.error("account by user is null");
-        return null;
+        throw new AccountNotFoundException(String.format("Account with id %s not found", idAccount));
+
     }
 }
