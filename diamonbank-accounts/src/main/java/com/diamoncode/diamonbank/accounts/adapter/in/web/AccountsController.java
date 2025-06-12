@@ -1,23 +1,22 @@
 package com.diamoncode.diamonbank.accounts.adapter.in.web;
 
-import com.diamoncode.auditor.AuditorFactory;
-import com.diamoncode.auditor.exception.AuditException;
 import com.diamoncode.diamonbank.accounts.adapter.in.web.config.AccountsServiceConfig;
+import com.diamoncode.diamonbank.accounts.adapter.in.web.util.ResponseUtil;
+import com.diamoncode.diamonbank.accounts.adapter.out.persistence.AccountPersistenceAdapter;
 import com.diamoncode.diamonbank.accounts.aplication.port.in.AccountsUseCase;
 import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.AccountDto;
 import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.PropertiesDto;
 import com.diamoncode.i18n.client.I18nFactory;
 import com.diamondcode.common.adapter.in.web.model.ResponseDTO;
-import com.diamondcode.common.adapter.in.web.model.WebAdapterResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.Map;
 import java.util.Optional;
 
@@ -25,16 +24,32 @@ import java.util.Optional;
 @RestController
 @RequestMapping(GlobalController.ACCOUNTS_REQUEST_MAPPING)
 @RequiredArgsConstructor
-public class AccountsController extends WebAdapterResponse {
+public class AccountsController {
     private static final Logger logger = LoggerFactory.getLogger(AccountsController.class);
 
     private final AccountsUseCase accountsUseCase;
 
     private final AccountsServiceConfig accountsServiceConfig;
+    private final AccountPersistenceAdapter accountsAdapter;
+
+
+    @PostMapping("/")
+    public ResponseEntity<ResponseDTO> createAccount(@Valid @RequestBody AccountDto accountDto, HttpServletRequest request) {
+        logger.info("Request {}", request.getRequestURL());
+        String idUser = request.getHeader("idUser");
+        long idUserLong = idUser == null ? 0 : Long.parseLong(idUser);
+
+        long idAccount = accountsAdapter.createAccount(accountDto, idUserLong);
+
+        return ResponseUtil.buildResponseCreate(
+                "Account created successfully",
+                GlobalController.ACCOUNTS_REQUEST_MAPPING + GlobalController.ACCOUNTS_REQUEST_MAPPING_GET_BY_ID,
+                Map.of("idAccount", idAccount));
+    }
 
 
     @GetMapping("/getHost")
-    public ResponseDTO getHost() throws JsonProcessingException {
+    public ResponseEntity<ResponseDTO> getHost() throws JsonProcessingException {
 
         Optional<String> podName = Optional.ofNullable(System.getenv("HOSTNAME"));
         Map<String, String> variables = System.getenv();
@@ -42,33 +57,32 @@ public class AccountsController extends WebAdapterResponse {
         String greeting = "Welcome to K8S cluster from " + variables;
         logger.info(greeting);
 
-        return getResponse("", greeting);
+        return ResponseUtil.buildResponseLoad("", greeting);
 
     }
 
     @GetMapping("/properties")
-    public ResponseDTO getProperties() throws JsonProcessingException {
+    public ResponseEntity<ResponseDTO> getProperties() throws JsonProcessingException {
 
-        PropertiesDto properties = new PropertiesDto(accountsServiceConfig.getMsg(), accountsServiceConfig.getBuildVersion()
-                , accountsServiceConfig.getMailDetails(), accountsServiceConfig.getActiveBranches());
+        PropertiesDto properties = new PropertiesDto(accountsServiceConfig.getMsg(), accountsServiceConfig.getBuildVersion(), accountsServiceConfig.getMailDetails(), accountsServiceConfig.getActiveBranches());
 
-        logger.info("Properties found ", properties.toString());
+        logger.info("Properties found ", properties);
 
-        return getResponse("", properties);
+        return ResponseUtil.buildResponseLoad("", properties);
 
     }
 
 
-    @GetMapping("/myAccount/{idAccount}")
-    public ResponseDTO getAccountDetails(@PathVariable("idAccount") long idAccount) {
+    @GetMapping(GlobalController.ACCOUNTS_REQUEST_MAPPING_GET_BY_ID)
+    public ResponseEntity<ResponseDTO> getAccountDetails(@PathVariable("idAccount") long idAccount) {
         AccountDto accountDto = accountsUseCase.findById(idAccount);
         logger.info("acount data ", accountDto.toString());
-        return getResponse("", accountDto);
+        return ResponseUtil.buildResponseLoad("", accountDto);
 
     }
 
     @GetMapping("/testI18n/{withDefault}")
-    public ResponseDTO testI18n(@PathVariable("withDefault") boolean withDefault) {
+    public ResponseEntity<ResponseDTO> testI18n(@PathVariable("withDefault") boolean withDefault) {
         String headerName = null;
         if (withDefault) {
             headerName = I18nFactory.getInstance().getMessage("header.name", "es", "Valor por defecto");
@@ -79,14 +93,14 @@ public class AccountsController extends WebAdapterResponse {
         logger.info("headerName value ", headerName);
 
 
-        ResponseDTO responseDTO = getResponse("Respuesta obtenida desde I18N", headerName);
+        ResponseEntity<ResponseDTO> responseDTO = ResponseUtil.buildResponseLoad("Respuesta obtenida desde I18N", headerName);
 
 
-        try {
+       /* try {
             AuditorFactory.send(responseDTO.toString());
         } catch (AuditException e) {
             logger.error("error sending data to rabbit");
-        }
+        }*/
 
         return responseDTO;
 

@@ -18,6 +18,7 @@ public class ConsolidatePositionDto {
     private final List<AccountDto> accounts;
     private final List<LoansDto> loans;
     private final List<CardsDto> cards;
+    private final ProductDto product;
 
 
 }

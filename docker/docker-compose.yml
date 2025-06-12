@@ -6,8 +6,6 @@ services:
     mem_limit: 700m
     ports:
       - "9411:9411"
-    networks:
-      - diamonbank_ns
 
   configserver:
     image: ${CONFIG_SERVER_IMAGE}
@@ -15,8 +13,6 @@ services:
     mem_limit: 700m
     ports:
       - "8082:8081"
-    networks:
-      - diamonbank_ns
     depends_on:
       - zipkin
     environment:
@@ -29,8 +25,6 @@ services:
     mem_limit: 700m
     ports:
       - "8070:8070"
-    networks:
-      - diamonbank_ns
     depends_on:
       - configserver
       - zipkin
@@ -50,8 +44,6 @@ services:
     container_name: dci18n
     ports:
       - "9100:8080"
-    networks:
-      - diamonbank_ns
     environment:
       - SPRING_DATASOURCE_URL=${I18N_DATABASE_URL}
       - SPRING_DATASOURCE_USERNAME=${DATABASE_USER}
@@ -110,7 +102,7 @@ services:
     container_name: cards
     mem_limit: 700m
     ports:
-      - "9000:9000"
+      - "9010:9000"
     depends_on:
       - configserver
       - eurekaserver
@@ -140,13 +132,11 @@ services:
         delay: 45s
         max_attempts: 3
         window: 180s
-    networks:
-      - diamonbank_ns
     environment:
       - SERVER_PORT=8099
       - SPRING_PROFILES_ACTIVE=${DEPLOY_ENVIRONMENT}
       - SPRING_CONFIG_IMPORT=configserver:http://configserver:8081/
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8070/eureka/
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka/
       - I18N_URL=http://dci18n:8080/
       - DEBUG_ENABLED=true
       - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak_server:7080/realms/diamon-bank/protocol/openid-connect/certs
@@ -165,8 +155,6 @@ services:
     environment:
       - RABBITMQ_USERNAME=username
       - RABBITMQ_PASSWORD=password
-    networks:
-      - diamonbank_ns
     volumes:
       - 'rabbitmq_bank_data:/bitnami'
 
@@ -177,8 +165,6 @@ services:
       - "9090:9090"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    networks:
-      - diamonbank_ns
 
   grafana-server:
     image: grafana/grafana:latest
@@ -188,8 +174,6 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=password
-    networks:
-      - diamonbank_ns
     depends_on:
       - prometheus-server
 
@@ -202,14 +186,11 @@ services:
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
-    volumes:
-      - '/home/wllopez/dev/tools/keycloak-data/:/opt/keycloak/data/h2'
-    networks:
-      - diamonbank_ns
+    #volumes:
+    #  - '/home/wllopez/dev/tools/keycloak-data/:/opt/keycloak/data/h2'
+
 
 volumes:
   rabbitmq_bank_data:
     driver: local
-networks:
-  diamonbank_ns:
 

@@ -6,8 +6,6 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
-    networks:
-      - diamonbank_ns
     environment:
       - SPRING_PROFILES_ACTIVE=${DEPLOY_ENVIRONMENT}
       - SPRING_CONFIG_IMPORT=configserver:http://configserver:8081/

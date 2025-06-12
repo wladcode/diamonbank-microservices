@@ -1,30 +1,33 @@
 package com.diamoncode.diamonbank.accounts.aplication.port.out.dto;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@ToString
-@RequiredArgsConstructor
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class AccountDto {
 
-    private final long id;
+    private long id;
 
-    private final long customerId;
+    private long customerId;
 
-    private final String number;
+    @NotEmpty(message = "Account number cannot be empty")
+    private String number;
 
-    private final String type;
+    @NotEmpty(message = "Account type cannot be empty")
+    private String type;
 
-    private final BigDecimal balance;
+    @NotNull(message = "Balance cannot be null")
+    private BigDecimal balance;
 
-    private final LocalDateTime createDt;
+    private LocalDateTime createDt;
 
+    @NotNull(message = "Address cannot be null")
+    private String branchAddress;
 }

@@ -1,6 +1,7 @@
 package com.diamoncode.diamonbank.accounts.adapter.out.persistence;
 
 import com.diamoncode.diamonbank.accounts.adapter.in.web.exception.AccountNotFoundException;
+import com.diamoncode.diamonbank.accounts.adapter.in.web.exception.ClientValidationException;
 import com.diamoncode.diamonbank.accounts.adapter.in.web.feing.cards.CardsFeingClient;
 import com.diamoncode.diamonbank.accounts.adapter.in.web.feing.loans.LoansFeingClient;
 import com.diamoncode.diamonbank.accounts.adapter.in.web.feing.product.ProductClient;
@@ -76,6 +77,20 @@ public class AccountPersistenceAdapter implements AccountPort {
         }
 
         throw new AccountNotFoundException(String.format("Account with id %s not found", idAccount));
+
+    }
+    public long createAccount(AccountDto accountDto, long customerId) {
+        if(customerId == 0) {
+            log.error("Customer ID cannot be zero");
+            throw new ClientValidationException("Customer ID cannot be zero");
+        }
+
+        JpaEntityAccount jpaEntityAccount = accountMapper.mapToJpaEntity(accountDto);
+        jpaEntityAccount.setCustomerId(customerId);
+
+        accountsRepository.save(jpaEntityAccount);
+        log.info("Account created successfully with id: {}", jpaEntityAccount.getAccountId());
+        return jpaEntityAccount.getAccountId();
 
     }
 }
