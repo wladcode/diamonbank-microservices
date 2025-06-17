@@ -12,6 +12,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,6 +49,21 @@ public class AccountsController {
                 Map.of("idAccount", idAccount));
     }
 
+    @GetMapping("/{idUser}")
+    public ResponseEntity<ResponseDTO> getAllAccounts(@PathVariable("idUser") long idUser, Pageable pegeable) {
+        Page<AccountDto> accounts = accountsAdapter.findAllByIdUser(idUser, pegeable);
+        logger.info("accounts data ", accounts.toString());
+        return ResponseUtil.buildResponseLoad("Accounts with pagination loaded", accounts);
+    }
+
+    @GetMapping(GlobalController.ACCOUNTS_REQUEST_MAPPING_GET_BY_ID)
+    public ResponseEntity<ResponseDTO> getAccountDetails(@PathVariable("idAccount") long idAccount) {
+        AccountDto accountDto = accountsUseCase.findById(idAccount);
+        logger.info("acount data ", accountDto.toString());
+        return ResponseUtil.buildResponseLoad("", accountDto);
+
+    }
+
 
     @GetMapping("/getHost")
     public ResponseEntity<ResponseDTO> getHost() throws JsonProcessingException {
@@ -72,14 +89,6 @@ public class AccountsController {
 
     }
 
-
-    @GetMapping(GlobalController.ACCOUNTS_REQUEST_MAPPING_GET_BY_ID)
-    public ResponseEntity<ResponseDTO> getAccountDetails(@PathVariable("idAccount") long idAccount) {
-        AccountDto accountDto = accountsUseCase.findById(idAccount);
-        logger.info("acount data ", accountDto.toString());
-        return ResponseUtil.buildResponseLoad("", accountDto);
-
-    }
 
     @GetMapping("/testI18n/{withDefault}")
     public ResponseEntity<ResponseDTO> testI18n(@PathVariable("withDefault") boolean withDefault) {

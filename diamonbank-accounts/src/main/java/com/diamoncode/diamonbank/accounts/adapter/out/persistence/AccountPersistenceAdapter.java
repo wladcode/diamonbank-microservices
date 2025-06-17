@@ -13,6 +13,10 @@ import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.*;
 import com.diamoncode.diamonbank.accounts.domain.Account;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -79,8 +83,9 @@ public class AccountPersistenceAdapter implements AccountPort {
         throw new AccountNotFoundException(String.format("Account with id %s not found", idAccount));
 
     }
+
     public long createAccount(AccountDto accountDto, long customerId) {
-        if(customerId == 0) {
+        if (customerId == 0) {
             log.error("Customer ID cannot be zero");
             throw new ClientValidationException("Customer ID cannot be zero");
         }
@@ -91,6 +96,37 @@ public class AccountPersistenceAdapter implements AccountPort {
         accountsRepository.save(jpaEntityAccount);
         log.info("Account created successfully with id: {}", jpaEntityAccount.getAccountId());
         return jpaEntityAccount.getAccountId();
+
+    }
+
+    public Page<AccountDto> findAllByIdUser(long customerId, Pageable pegeable) {
+
+        int pageNumber = 0;
+        int pageSize = 10;
+
+        if (pegeable.getPageNumber() >= 0) {
+            pageNumber = pegeable.getPageNumber();
+        }
+        if (pegeable.getPageSize() > 0 && pegeable.getPageSize() <= 20) {
+            pageSize = pegeable.getPageSize();
+        }
+        Sort sort = Sort.by(Sort.Direction.ASC, "accountNumber");
+        if (pegeable.getSort() != null) {
+            sort = pegeable.getSort();
+            Sort.Order order = sort.toList().get(0);
+            String property = order.getProperty();
+            sort = Sort.by(order.getDirection(), accountMapper.mapPropertyFromDto(property));
+        }
+
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
+
+        Page<JpaEntityAccount> accountPageList = accountsRepository.findByCustomerId(customerId, pageRequest);
+        if (accountPageList.isEmpty()) {
+            log.error("No accounts found for user with id: {}", customerId);
+            throw new AccountNotFoundException(String.format("No accounts found for user with id %s", customerId));
+        }
+
+        return accountPageList.map(accountMapper::mapToDomain);
 
     }
 }

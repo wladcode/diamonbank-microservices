@@ -1,6 +1,7 @@
 package com.diamoncode.diamonbank.accounts.adapter.in.web.exception;
 
 import com.diamoncode.diamonbank.accounts.adapter.in.web.dto.ResponseErrorDTO;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -43,6 +44,13 @@ public class ControllerExceptionAdvisor {
     @ExceptionHandler(ClientValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseErrorDTO handleValidationException(ClientValidationException ex) {
-        return new ResponseErrorDTO(HttpStatus.BAD_REQUEST.value(), String.format("Backend error: %s", ex.getMessage()));
+        return new ResponseErrorDTO(HttpStatus.BAD_REQUEST.value(), String.format("Backend validation: %s", ex.getMessage()));
+    }
+
+
+    @ExceptionHandler(PropertyReferenceException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseErrorDTO handlePropertyValidationException(PropertyReferenceException ex) {
+        return new ResponseErrorDTO(HttpStatus.BAD_REQUEST.value(), String.format("Bad request: %s", ex.getMessage()));
     }
 }

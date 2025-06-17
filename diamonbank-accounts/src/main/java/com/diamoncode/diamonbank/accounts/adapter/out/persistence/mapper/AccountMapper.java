@@ -47,4 +47,28 @@ public class AccountMapper {
         return jpaEntityAccount;
 
     }
+
+
+    public String mapPropertyFromDto(String property) {
+        if( property == null || property.isEmpty()) {
+            return null;
+        }
+        switch (property) {
+            case "id":
+                return "accountId";
+            case "number":
+                return "accountNumber";
+            case "type":
+                return "accountType";
+            case "balance":
+                return "balance";
+            case "createDt":
+                return "createDate";
+            case "branchAddress":
+                return "branchAddress";
+            default:
+                return property;
+        }
+
+    }
 }

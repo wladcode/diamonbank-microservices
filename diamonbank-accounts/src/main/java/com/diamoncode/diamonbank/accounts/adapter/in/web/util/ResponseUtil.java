@@ -33,8 +33,7 @@ public class ResponseUtil {
         responseDTO.getHeader().setMessage(message);
         responseDTO.setData(data);
 
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(responseDTO);
+        return ResponseEntity.ok().body(responseDTO);
     }
 
 
