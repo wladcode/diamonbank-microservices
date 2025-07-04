@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -48,21 +49,18 @@ public class AccountPersistenceAdapter implements AccountPort {
     @Override
     public ConsolidatePositionDto getConsolidatePosition(Long accountId) {
         CustomerDto customerDto = new CustomerDto(accountId);
-        List<JpaEntityAccount> accounts = accountsRepository.findByCustomerId(accountId);
-        List<LoansDto> loans = loansFeingClient.getLoans(customerDto);
-        List<CardsDto> cards = cardsFeingClient.getCardDetails(customerDto);
-        ProductDto productById = productClient.getProductById(accountId);
+        CompletableFuture<List<JpaEntityAccount>> futureAccounts = CompletableFuture.supplyAsync(() -> accountsRepository.findByCustomerId(accountId));
+        CompletableFuture<List<LoansDto>> futureLoans = CompletableFuture.supplyAsync(() -> loansFeingClient.getLoans(customerDto));
+        CompletableFuture<List<CardsDto>> futureCards = CompletableFuture.supplyAsync(() -> cardsFeingClient.getCardDetails(customerDto));
+        CompletableFuture<ProductDto> futureProduct = CompletableFuture.supplyAsync(() -> productClient.getProductById(accountId));
 
-        log.info("acounts ", accounts.size());
-        log.info("loans ", loans.size());
-        log.info("cards ", cards.size());
-
-        return ConsolidatePositionDto.builder()
-                .accounts(accountMapper.mapToDomain(accounts))
-                .loans(loans)
-                .cards(cards)
-                .product(productById)
-                .build();
+        return CompletableFuture.allOf(futureAccounts, futureLoans, futureCards, futureProduct)
+                .thenApply(v -> ConsolidatePositionDto.builder()
+                        .accounts(accountMapper.mapToDomain(futureAccounts.join()))
+                        .loans(futureLoans.join())
+                        .cards(futureCards.join())
+                        .product(futureProduct.join())
+                        .build()).join();
     }
 
 
