@@ -1,0 +1,9 @@
+# English messages
+en:
+  button:
+    ok: OK
+    cancel: Cancel
+  messages:
+    greeting: Hello
+  error:
+    generic: An error occurred.

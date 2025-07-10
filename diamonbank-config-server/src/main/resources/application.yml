@@ -9,18 +9,23 @@ server:
 spring:
   application:
     name: configserver
+  profiles:
+    active: composite
   cloud:
     config:
       server:
-        git:
-          clone-on-start: true
-          default-label: master
-          force-pull: true
-          uri: https://github.com/chamoW/diamonbank-microservices-config.git
-          # uri: https://github.com/giancarlolm/service-configuration
+        composite:
+          - type: native
+            uri: file://config
+            order: 1
+          - type: git
+            uri: https://github.com/chamoW/diamonbank-microservices-config.git
+            clone-on-start: true
+            default-label: master
+            force-pull: true
+            order: 2
+            # uri: https://github.com/giancarlolm/service-configuration
 
-  profiles:
-    active: git
   rabbitmq:
     host: localhost
     password: password

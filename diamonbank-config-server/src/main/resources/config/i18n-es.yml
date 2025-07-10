@@ -1,0 +1,9 @@
+# Spanish messages
+es:
+  button:
+    ok: Correcto
+    cancel: Cancelar
+  messages:
+    greeting: Hola
+  error:
+    generic: Ha ocurrido un error
