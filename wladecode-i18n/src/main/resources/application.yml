@@ -1,0 +1,46 @@
+server:
+  port: 8069
+spring:
+  application:
+    name: i18n-ms
+  config:
+    import: "optional:configserver:"
+  cloud:
+    config:
+      uri: http://localhost:8071
+      enabled: true
+      fail-fast: true
+      #profile: messages
+      name: i18n,i18n-es,i18n-en
+
+# Actuator
+management:
+  info:
+    env:
+      enabled: true
+  endpoint:
+    shutdown:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: all
+# Eureka
+eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: false
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
+
+  # Configuraiton info
+  info:
+    application:
+      name: @name@
+      description: @description@
+      version: @version@
+
