@@ -1,4 +1,4 @@
-package com.diamoncode.diamonbank.configserver.utils;
+package com.diamondcode.common.application.service.util;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -14,7 +14,7 @@ import java.util.Base64;
  * authorization code interception attacks.
  */
 
-public class PKCEGenerator {
+public class UtilPKCEGenerator {
 
 
     /**
