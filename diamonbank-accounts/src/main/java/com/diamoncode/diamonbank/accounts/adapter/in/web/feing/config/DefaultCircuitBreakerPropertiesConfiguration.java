@@ -1,6 +1,6 @@
 package com.diamoncode.diamonbank.accounts.adapter.in.web.feing.config;
 
-import io.github.resilience4j.circuitbreaker.autoconfigure.CircuitBreakerProperties;
+import io.github.resilience4j.springboot3.circuitbreaker.autoconfigure.CircuitBreakerProperties;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Configuration;

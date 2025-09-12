@@ -6,7 +6,7 @@ import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.ConsolidatePos
 import com.diamondcode.common.application.service.UseCase;
 import lombok.RequiredArgsConstructor;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 @UseCase
 @Transactional

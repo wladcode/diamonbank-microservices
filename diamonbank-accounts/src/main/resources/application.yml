@@ -105,3 +105,12 @@ spring:
             queue: from-zipkin
         sender:
             type: rabbit
+    #########################################################
+    #Properties for OAUTH2
+    #########################################################
+    security:
+        oauth2:
+            resourceserver:
+                jwt:
+                    issuer-uri: http://localhost:7080/realms/wladecodeusers
+                    jwk-set-uri: http://localhost:7080/realms/wladecodeusers/protocol/openid-connect/certs

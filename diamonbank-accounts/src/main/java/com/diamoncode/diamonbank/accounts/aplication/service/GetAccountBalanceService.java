@@ -7,7 +7,7 @@ import com.diamoncode.diamonbank.accounts.domain.Money;
 import com.diamondcode.common.application.service.UseCase;
 import lombok.RequiredArgsConstructor;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 
 /**

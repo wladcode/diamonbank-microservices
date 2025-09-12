@@ -6,7 +6,7 @@ import com.diamoncode.diamonbank.accounts.adapter.out.persistence.AccountPersist
 import com.diamoncode.diamonbank.accounts.aplication.port.in.AccountsUseCase;
 import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.AccountDto;
 import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.PropertiesDto;
-import com.diamoncode.i18n.client.I18nFactory;
+//import com.diamoncode.i18n.client.I18nFactory;
 import com.diamondcode.common.adapter.in.web.model.ResponseDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +15,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import java.util.Map;
 import java.util.Optional;
 
@@ -57,11 +59,24 @@ public class AccountsController {
     }
 
     @GetMapping(GlobalController.ACCOUNTS_REQUEST_MAPPING_GET_BY_ID)
-    public ResponseEntity<ResponseDTO> getAccountDetails(@PathVariable("idAccount") long idAccount) {
-        AccountDto accountDto = accountsUseCase.findById(idAccount);
-        logger.info("acount data ", accountDto.toString());
-        return ResponseUtil.buildResponseLoad("", accountDto);
+    public ResponseEntity<ResponseDTO> getAccountDetails(
+            @PathVariable("idAccount") long idAccount,
+            @AuthenticationPrincipal Jwt jwt) {
 
+        // Example of accessing JWT claims
+        if (jwt != null) {
+            String subject = jwt.getSubject();
+            String email = jwt.getClaim("email");
+            logger.info("JWT Subject: {}", subject);
+            logger.info("JWT Email: {}", email);
+            logger.info("JWT Claims: {}", jwt.getClaims());
+        }
+
+        AccountDto accountDto = accountsUseCase.findById(idAccount);
+        logger.info("account data: {}", accountDto);
+
+        
+        return ResponseUtil.buildResponseLoad("", accountDto);
     }
 
 
@@ -89,7 +104,7 @@ public class AccountsController {
 
     }
 
-
+/*
     @GetMapping("/testI18n/{withDefault}")
     public ResponseEntity<ResponseDTO> testI18n(@PathVariable("withDefault") boolean withDefault) {
         String headerName = null;
@@ -105,15 +120,15 @@ public class AccountsController {
         ResponseEntity<ResponseDTO> responseDTO = ResponseUtil.buildResponseLoad("Respuesta obtenida desde I18N", headerName);
 
 
-       /* try {
+        try {
             AuditorFactory.send(responseDTO.toString());
         } catch (AuditException e) {
             logger.error("error sending data to rabbit");
-        }*/
+        }
 
         return responseDTO;
 
-    }
+    }*/
 
 
 }

@@ -6,7 +6,7 @@ import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.AccountDto;
 import com.diamondcode.common.application.service.UseCase;
 import lombok.RequiredArgsConstructor;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.List;
 
 @UseCase
