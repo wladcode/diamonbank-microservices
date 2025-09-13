@@ -9,6 +9,10 @@ import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,13 +28,25 @@ public class ConsolidatePositionController {
 
     private final GetConsolidatePositionUseCase getConsolidatePosition;
 
+
+    @Secured("ROLE_developer")
+    @PreAuthorize("hasRole('developer') or #customerId == #jwt.subject")
     @GetMapping("/consolidate/{customerId}")
     //@Retry(name = "retryCosolidation", fallbackMethod = "fallbackForRetryConsolidate")
     @RateLimiter(name = "rateLimiterConsolidate", fallbackMethod = "fallbackForRateLimiterConsolidate")
     @Timed(value = "getPositionConsolidate.time", description = "Time taked to return consolidate position")
-    public ResponseEntity<ResponseDTO> getPositionConsolidate(@PathVariable("customerId") Long customerId) {
+    public ResponseEntity<ResponseDTO> getPositionConsolidate(@PathVariable("customerId") String customerId,
+                                                              @AuthenticationPrincipal Jwt jwt) {
 
-        ConsolidatePositionDto consolidatePositionDto = getConsolidatePosition.getConsolidatePosition(customerId);
+        String subject = jwt.getSubject();
+        if(subject.equals(customerId)){
+            log.info("User {} is trying to access their own consolidate position", subject);
+        }
+
+        Long idUser = Long.parseLong(customerId);
+
+
+        ConsolidatePositionDto consolidatePositionDto = getConsolidatePosition.getConsolidatePosition(idUser);
 
         /*
         try {

@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
@@ -93,6 +94,7 @@ public class AccountsController {
 
     }
 
+    @PostAuthorize("returnObject.body.data.msg == 'Hello World'")
     @GetMapping("/properties")
     public ResponseEntity<ResponseDTO> getProperties() throws JsonProcessingException {
 
