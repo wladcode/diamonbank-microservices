@@ -38,3 +38,6 @@ build/
 *.tgz
 requirements.lock
 Chart.lock
+
+
+**/src/main/resources/firebase/firebaseKey.json

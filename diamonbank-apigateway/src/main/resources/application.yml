@@ -16,8 +16,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:7080/realms/diamon-bank
-          jwk-set-uri: http://localhost:7080/realms/diamon-bank/protocol/openid-connect/certs
+          issuer-uri: http://localhost:7080/realms/wladecodeusers
+          jwk-set-uri: http://localhost:7080/realms/wladecodeusers/protocol/openid-connect/certs
 
   #########################################################
   #Properties for configserver
@@ -28,6 +28,9 @@ spring:
   #Configuration gateway
   #########################################################
   cloud:
+    gcp:
+      sql:
+        enabled: false
     loadbalancer:
       ribbon:
         enabled: false
@@ -36,7 +39,6 @@ spring:
         locator:
           #enabled: true
           #lower-case-service-id: true
-
       routes:
         # CONFIG POR ACCOUNTS MS
         - id: accounts-ms
@@ -45,6 +47,7 @@ spring:
             - Path=/${config.api-name}/${config.endpoints.ACCOUNTS}/actuator/**
           filters:
             - RewritePath=/${config.api-name}/${config.endpoints.ACCOUNTS}/actuator/(?<segment>.*), /actuator/$\{segment}
+            - RemoveRequestHeader=Cookie
         - id: accounts-ms
           uri: lb://accounts
           predicates:
