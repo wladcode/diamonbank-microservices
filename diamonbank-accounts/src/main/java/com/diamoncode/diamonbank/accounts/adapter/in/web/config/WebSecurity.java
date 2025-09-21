@@ -23,6 +23,7 @@ public class WebSecurity {
         //Configure http security
         http
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/accounts/**")
                         //.hasAuthority("SCOPE_account_list")
                         .hasRole("developer")

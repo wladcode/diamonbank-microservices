@@ -11,8 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,16 +33,9 @@ public class ConsolidatePositionController {
     //@Retry(name = "retryCosolidation", fallbackMethod = "fallbackForRetryConsolidate")
     @RateLimiter(name = "rateLimiterConsolidate", fallbackMethod = "fallbackForRateLimiterConsolidate")
     @Timed(value = "getPositionConsolidate.time", description = "Time taked to return consolidate position")
-    public ResponseEntity<ResponseDTO> getPositionConsolidate(@PathVariable("customerId") String customerId,
-                                                              @AuthenticationPrincipal Jwt jwt) {
-
-        String subject = jwt.getSubject();
-        if(subject.equals(customerId)){
-            log.info("User {} is trying to access their own consolidate position", subject);
-        }
+    public ResponseEntity<ResponseDTO> getPositionConsolidate(@PathVariable("customerId") String customerId) {
 
         Long idUser = Long.parseLong(customerId);
-
 
         ConsolidatePositionDto consolidatePositionDto = getConsolidatePosition.getConsolidatePosition(idUser);
 
@@ -59,14 +50,14 @@ public class ConsolidatePositionController {
         return ResponseUtil.buildResponseLoad("Consolidate Position loaded successfully", consolidatePositionDto);
     }
 
-    public  ResponseEntity<ResponseDTO> fallbackForRetryConsolidate(Long customerId, Throwable throwable) {
+    public ResponseEntity<ResponseDTO> fallbackForRetryConsolidate(Long customerId, Throwable throwable) {
         log.error("fallback rate r ");
         throwable.printStackTrace();
         return ResponseUtil.buildResponseLoad("response from fallbackForRetryConsolidate", new ConsolidatePositionDto(null, null, null, null));
 
     }
 
-    public  ResponseEntity<ResponseDTO> fallbackForRateLimiterConsolidate(Long customerId, Throwable throwable) {
+    public ResponseEntity<ResponseDTO> fallbackForRateLimiterConsolidate(Long customerId, Throwable throwable) {
 
         log.error("fallback rate limmiter ");
 
