@@ -1,8 +1,10 @@
-
+server:
+  port: 8072
 config:
   api-name: "dc-api"
   endpoints:
     ACCOUNTS: "accounts"
+    CUSTOMERS: "customer"
     LOANS: "loans"
     CARDS: "cards"
 spring:
@@ -28,17 +30,14 @@ spring:
   #Configuration gateway
   #########################################################
   cloud:
-    gcp:
-      sql:
-        enabled: false
     loadbalancer:
       ribbon:
         enabled: false
     gateway:
       discovery:
         locator:
-          #enabled: true
-          #lower-case-service-id: true
+        #enabled: true
+        #lower-case-service-id: true
       routes:
         # CONFIG POR ACCOUNTS MS
         - id: accounts-ms
@@ -47,7 +46,6 @@ spring:
             - Path=/${config.api-name}/${config.endpoints.ACCOUNTS}/actuator/**
           filters:
             - RewritePath=/${config.api-name}/${config.endpoints.ACCOUNTS}/actuator/(?<segment>.*), /actuator/$\{segment}
-            - RemoveRequestHeader=Cookie
         - id: accounts-ms
           uri: lb://accounts
           predicates:
@@ -58,7 +56,12 @@ spring:
               args:
                 headers: "CALCULO,MATE"
                 withHeaders: true
-
+        - id: accounts-ms-customers
+          uri: lb://accounts
+          predicates:
+            - Path=/${config.api-name}/${config.endpoints.CUSTOMERS}/**
+          filters:
+            - RewritePath=/${config.api-name}/${config.endpoints.CUSTOMERS}/(?<segment>.*), /customer/$\{segment}
         # CONFIG POR LOANS MS
         - id: loans-ms
           uri: lb://loans
@@ -129,8 +132,7 @@ logging:
     reactor.netty.http.client: DEBUG
     com.diamoncode.diamonbankapigateway: DEBUG
 
-server:
-  port: 8099
+
 
 #########################################################
 #Eureka client configuration
