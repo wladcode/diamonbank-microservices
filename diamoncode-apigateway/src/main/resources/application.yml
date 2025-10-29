@@ -1,0 +1,159 @@
+server:
+  port: 8199
+  # Increase the max header size for requests arriving at the gateway
+  #max-http-header-size: 16KB # 16 KB (Double the default)
+config:
+  api-name: "api"
+  endpoints:
+    ACCOUNTS: "accounts"
+    CUSTOMERS: "customer"
+    LOANS: "loans"
+    CARDS: "cards"
+spring:
+  application:
+    name: "gatewayserver"
+
+  #########################################################
+  #Properties for security
+  #########################################################
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:7080/realms/wladecodeusers
+          jwk-set-uri: http://localhost:7080/realms/wladecodeusers/protocol/openid-connect/certs
+
+  #########################################################
+  #Configuration gateway
+  #########################################################
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+    gateway:
+      #globalcors:
+      #  cors-configurations:
+      #    '[/**]':
+      #      allowedOrigins: "*"
+      #      allowedMethods: "*"
+      #      allowedHeaders: "*"
+      #      allowCredentials: true
+      #httpclient:
+        # Increase the max header size for requests originating from the gateway
+        #max-header-size: 16384 # 16 KB (Double the default)
+      discovery:
+        locator:
+        #enabled: true
+        #lower-case-service-id: true
+      mvc:
+        routes:
+          # CONFIG POR ACCOUNTS MS
+          - id: accounts-ms-actuator
+            uri: http://accounts:8080
+            predicates:
+              - Path=/${config.api-name}/${config.endpoints.ACCOUNTS}/actuator/**
+            filters:
+              - RewritePath=/${config.api-name}/${config.endpoints.ACCOUNTS}/actuator/(?<segment>.*), /actuator/$\{segment}
+          - id: accounts-ms
+            uri: http://accounts:8080
+            predicates:
+              - Path=/${config.api-name}/${config.endpoints.ACCOUNTS}/**
+            filters:
+              - RewritePath=/${config.api-name}/${config.endpoints.ACCOUNTS}/(?<segment>.*), /accounts/\${segment}
+          # CONFIG POR CUSTOMERS MS
+          - id: accounts-ms-customers
+            uri: http://accounts:8080
+            predicates:
+              - Path=/api/customer/**
+            filters:
+              - RewritePath=^/api/customer/(?<segment>.*), /customer/\${segment}
+          # CONFIG POR LOANS MS
+          - id: loans-ms
+            uri: lb://loans
+            predicates:
+              - Path=/${config.api-name}/${config.endpoints.LOANS}/actuator/**
+            filters:
+              - RewritePath=/${config.api-name}/${config.endpoints.LOANS}/actuator/(?<segment>.*), /actuator/$\{segment}
+          - id: loans-ms
+            uri: lb://loans
+            predicates:
+              - Path=/${config.api-name}/${config.endpoints.LOANS}/**
+            filters:
+              - RewritePath=/${config.api-name}/${config.endpoints.LOANS}/(?<segment>.*), /loans/$\{segment}
+              #- AddResponseHeaders
+
+          # CONFIG POR CARDS
+          - id: cards-ms
+            uri: lb://cards
+            predicates:
+              - Path=/${config.api-name}/${config.endpoints.CARDS}/actuator/**
+            filters:
+              - RewritePath=/${config.api-name}/${config.endpoints.CARDS}/actuator/(?<segment>.*), /actuator/$\{segment}
+          - id: cards-ms
+            uri: lb://cards
+            predicates:
+              - Path=/${config.api-name}/${config.endpoints.CARDS}/**
+            filters:
+              - RewritePath=/${config.api-name}/${config.endpoints.CARDS}/(?<segment>.*), /cards/$\{segment}
+  #USED BY LOG AGREGATION WITH ZIPKIN
+  sleuth:
+    sampler:
+      percentage: 1
+  zipkin:
+    baseUrl: http://localhost:9411/
+
+#########################################################
+#Actuator endpoint
+#FOr all endpoints management.endpoints.web.exposure.include=*
+#########################################################
+management:
+  # Enables actuator/gateway
+  endpoint:
+    gateway:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "health, info, gateway, prometheus"
+  # Enables actuator/info
+  info:
+    env:
+      enabled: true
+
+#########################################################
+#Configuration info
+#########################################################
+info:
+  application:
+    name: '@project.name@'
+    description: '@project.description@'
+    version: '@project.version@'
+
+logging:
+  level:
+    #root: DEBUG
+    #org.springframework: DEBUG
+    org.springframework.cloud.gateway: DEBUG
+    #reactor.netty.http.client: DEBUG
+    #com.diamoncode.diamonbankapigateway: DEBUG
+
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2.client: DEBUG
+    org.springframework.security.oauth2.core: DEBUG
+    org.springframework.security.web.authentication.preauth: DEBUG
+
+
+#########################################################
+#Eureka client configuration
+#########################################################
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8070/eureka/
+  instance:
+    instance-id: '${spring.application.name}:${random.uuid}:${server.port}'
+    prefer-ip-address: true
+    hostname: localhost
+
