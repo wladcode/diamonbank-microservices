@@ -1,7 +1,6 @@
 # Variables
-ARG builder_image=openjdk:11-slim
-ARG runtimer_image=openjdk:11-slim
-
+ARG builder_image=openjdk:17-slim
+ARG runtimer_image=openjdk:17-slim
 
 FROM ${builder_image} as builder
 WORKDIR /home
@@ -25,11 +24,11 @@ RUN chown usr_diamoncode:gp_diamoncode $home_path
 WORKDIR $home_path
 
 USER usr_diamoncode
-COPY --chown=usr_diamoncode run_app.sh .
-COPY --from=builder --chown=usr_diamoncode home/dependencies/ ./
-COPY --from=builder --chown=usr_diamoncode home/snapshot-dependencies/ ./
-COPY --from=builder --chown=usr_diamoncode home/spring-boot-loader/ ./
-COPY --from=builder --chown=usr_diamoncode home/application/ ./
+COPY --chown=usr_diamoncode:gp_diamoncode run_app.sh .
+COPY --from=builder --chown=usr_diamoncode:gp_diamoncode home/dependencies/ ./
+COPY --from=builder --chown=usr_diamoncode:gp_diamoncode home/snapshot-dependencies/ ./
+COPY --from=builder --chown=usr_diamoncode:gp_diamoncode home/spring-boot-loader/ ./
+COPY --from=builder --chown=usr_diamoncode:gp_diamoncode home/application/ ./
 
 ENTRYPOINT sh run_app.sh
 

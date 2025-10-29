@@ -109,7 +109,7 @@ public class AccountPersistenceAdapter implements AccountPort {
             pageSize = pegeable.getPageSize();
         }
         Sort sort = Sort.by(Sort.Direction.ASC, "accountNumber");
-        if (pegeable.getSort() != null) {
+        if (!pegeable.getSort().isEmpty()) {
             sort = pegeable.getSort();
             Sort.Order order = sort.toList().get(0);
             String property = order.getProperty();

@@ -28,7 +28,8 @@ public class ConsolidatePositionController {
 
 
     @Secured("ROLE_developer")
-    @PreAuthorize("hasRole('developer') or #customerId == #jwt.subject")
+    //@PreAuthorize("hasRole('developer') or #customerId == #jwt.subject")
+    @PreAuthorize("hasRole('developer')")
     @GetMapping("/consolidate/{customerId}")
     //@Retry(name = "retryCosolidation", fallbackMethod = "fallbackForRetryConsolidate")
     @RateLimiter(name = "rateLimiterConsolidate", fallbackMethod = "fallbackForRateLimiterConsolidate")

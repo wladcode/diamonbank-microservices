@@ -16,7 +16,7 @@ public class CustomerAdapter implements CustomerPort {
 
     @Override
     public CustomerResponse createCustomer(CustomerRequest customerRequest) {
-        return customersRepository.findByEmail(customerRequest.email())
+        return customersRepository.findByEmail(customerRequest.getEmail())
                 .map(CustomerMapper::mapToResponse)
                 .orElseGet(() -> {
                     JpaEntityCustomer newCustomer = CustomerMapper.mapToEntity(customerRequest);

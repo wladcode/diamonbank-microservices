@@ -1,6 +1,6 @@
 package com.diamoncode.diamonbank.accounts.adapter.in.web.exception;
 
-import com.diamoncode.diamonbank.accounts.adapter.in.web.dto.ResponseErrorDTO;
+import com.diamondcode.common.adapter.in.web.model.ResponseErrorDTO;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;

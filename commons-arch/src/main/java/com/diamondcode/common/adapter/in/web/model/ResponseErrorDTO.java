@@ -1,6 +1,5 @@
-package com.diamoncode.diamonbank.accounts.adapter.in.web.dto;
+package com.diamondcode.common.adapter.in.web.model;
 
-import com.diamondcode.common.adapter.in.web.model.ResponseDTO;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -9,6 +8,10 @@ import java.util.Map;
 @Data
 public class ResponseErrorDTO extends ResponseDTO {
     private Map<String, String> errors  ;
+
+    public ResponseErrorDTO() {
+        super();
+    }
 
     public ResponseErrorDTO(int code, String message) {
         super();

@@ -13,8 +13,8 @@ public class CustomerMapper {
     public static JpaEntityCustomer mapToEntity(CustomerRequest customerRequest) {
         JpaEntityCustomer jpaEntityCustomer = new JpaEntityCustomer();
         jpaEntityCustomer.setCustomerId(Math.abs(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE));
-        jpaEntityCustomer.setName(customerRequest.name());
-        jpaEntityCustomer.setEmail(customerRequest.email());
+        jpaEntityCustomer.setName(customerRequest.getName());
+        jpaEntityCustomer.setEmail(customerRequest.getEmail());
         jpaEntityCustomer.setCreateDate(LocalDate.now());
 
         return jpaEntityCustomer;

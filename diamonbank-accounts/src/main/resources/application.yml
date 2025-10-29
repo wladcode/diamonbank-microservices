@@ -136,3 +136,11 @@ spring:
                 jwt:
                     issuer-uri: http://localhost:7080/realms/wladecodeusers
                     jwk-set-uri: http://localhost:7080/realms/wladecodeusers/protocol/openid-connect/certs
+
+#Logging
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2.client: DEBUG
+    org.springframework.security.oauth2.core: DEBUG
+    org.springframework.security.web.authentication.preauth: DEBUG
