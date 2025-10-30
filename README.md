@@ -1,13 +1,9 @@
-# MICROSERVICES EXAMPLE
+# MICROSERVICES DIAMONBANK
 
-## USE OF DOCKER COMPOSE
+This repository contains a set of microservices that implement a bank application.
+It could be used as a starting point for building a microservices architecture.
 
-> To use docker compose follow the next steps:
-> - First, open **docker** folder,
-> - Then, copy ***.env_template*** file, and rename it to ***.env***,
-> - Finally, execute `docker compose up -d` command
-
-## DEVELOPMENT ENVIROMENT
+# HOW TO USE IT?
 
 # Install PostgreSQL with Docker
 
@@ -87,3 +83,11 @@ To connect to your PostgreSQL database using DBeaver:
 2. The data will persist even if the container is stopped or removed.
 3. The default port 5432 is exposed to the host machine. Change the first port number if 5432 is already in use.
 4. For production use, consider using more secure password management and additional security measures.
+
+
+## USE OF DOCKER COMPOSE
+
+> To use docker compose follow the next steps:
+> - First, open **docker** folder,
+> - Then, copy ***.env_template*** file, and rename it to ***.env***,
+> - Finally, execute `docker compose up -d` command
