@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Diamond Bank</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/}">Diamond Bank</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/accounts}">
+                        <i class="fas fa-wallet me-1"></i> Accounts
+                    </a>
+                </li>
+                <li class="nav-item mx-1"><a class="btn btn-outline-success" th:href="@{/locale(lang=es_EC)}">ES</a></li>
+                <li class="nav-item mx-1"><a class="btn btn-outline-success" th:href="@{/locale(lang=en_US)}">EN</a></li>
+                <li class="nav-item mx-1"><a class="btn btn-outline-success" th:href="@{/locale(lang=de_DE)}">DE</a></li>
+
+                <!-- Add more navigation items as needed -->
+            </ul>
+            <div class="d-flex align-items-center">
+                <span sec:authorize="isAuthenticated()" class="navbar-text me-3">
+                    Welcome, <span sec:authentication="name">User</span>
+                </span>
+                <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-outline-light">
+                        <i class="fas fa-sign-out-alt me-1"></i> Sign Out
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<main class="container my-4">
+    <div layout:fragment="content">
+        <!-- This section will be replaced by the content of the page that extends this layout -->
+        <h1>Welcome to Diamond Bank</h1>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="bg-light py-4 mt-5">
+    <div class="container text-center">
+        <p class="mb-0">&copy; 2025 Wlade-Code. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Page-specific scripts -->
+<th:block layout:fragment="scripts">
+    <!-- Page-specific scripts will be inserted here -->
+</th:block>
+</body>
+</html>

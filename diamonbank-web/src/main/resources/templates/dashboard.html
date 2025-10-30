@@ -1,0 +1,27 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}"
+      lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accounts - Diamond Bank</title>
+
+    <!-- Add any additional CSS or JS files here -->
+    <link th:href="@{/css/accounts.css}" rel="stylesheet" th:if="${#bools.isTrue(@environment.getProperty('app.use-cdn', Boolean))}"/>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="container mt-4">
+
+        ACA DATOS DEL CLIENTE
+
+    </div>
+</div>
+
+
+</body>
+</html>

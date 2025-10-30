@@ -1,0 +1,42 @@
+server:
+  port: 8182
+
+spring:
+  application:
+    name: diamonbank-web
+
+  security:
+    oauth2:
+      client:
+        registration:
+          diamondbankweb:
+            client-id: diamon-bank
+            client-secret: HCEmhtqpWHws4pCl9fu7FyoJQih8bBbU
+            scope: openid,profile,roles
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:${server.port}/login/oauth2/code/diamondbankweb
+        provider:
+          diamondbankweb:
+            authorization-uri: http://localhost:7080/realms/wladecodeusers/protocol/openid-connect/auth
+            token-uri: http://localhost:7080/realms/wladecodeusers/protocol/openid-connect/token
+            jwk-set-uri: http://localhost:7080/realms/wladecodeusers/protocol/openid-connect/certs
+            user-info-uri: http://localhost:7080/realms/wladecodeusers/protocol/openid-connect/userinfo
+            user-name-attribute: preferred_username
+
+
+logging:
+  level:
+    org.springframework.security: INFO
+    org.springframework.security.oauth2.client: DEBUG
+    org.springframework.security.oauth2.core: DEBUG
+    org.springframework.security.web.authentication.preauth: DEBUG
+
+
+
+
+# Customer Service Configuration
+api-gateway:
+  host: http://localhost:8099
+  api-name: api
+  url: ${api-gateway.host}/${api-gateway.api-name}
+

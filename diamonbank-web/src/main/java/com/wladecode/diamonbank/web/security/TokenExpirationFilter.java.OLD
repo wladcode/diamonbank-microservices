@@ -1,0 +1,56 @@
+package com.wladecode.diamonbank.web.security;
+
+import com.wladecode.diamonbank.web.utils.UtilUserInfoExtractor;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+
+public class TokenExpirationFilter extends OncePerRequestFilter {
+
+    private final UtilUserInfoExtractor utilUserInfoExtractor;
+
+    public TokenExpirationFilter(UtilUserInfoExtractor utilUserInfoExtractor) {
+        this.utilUserInfoExtractor = utilUserInfoExtractor;
+    }
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // Only check for authenticated users
+        if (authentication != null && authentication.isAuthenticated()) {
+            if (authentication.getPrincipal().equals("anonymousUser")) {
+                SecurityContextHolder.clearContext();
+                response.sendRedirect("/");
+                return;
+            } else {
+                long expirationTime = utilUserInfoExtractor.getTokenExpirationTimeMillis();
+
+                // If token is expired, clear authentication and redirect to home
+                if (expirationTime <= 0) {
+                    SecurityContextHolder.clearContext();
+                    response.sendRedirect("/");
+                    return;
+                }
+            }
+        }
+
+
+        filterChain.doFilter(request, response);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        // Skip for login page and static resources
+        String path = request.getRequestURI();
+        return path.equals("/") || path.startsWith("/webjars/") || path.startsWith("/css/") || path.startsWith("/js/");
+    }
+}

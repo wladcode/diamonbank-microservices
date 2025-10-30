@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <!-- Account Summary Fragment -->
+    <div th:fragment="account-summary" class="card mt-4">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-chart-pie me-2"></i>Account Summary</h5>
+        </div>
+        <div class="card-body">
+            <div class="row text-center">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h6 class="text-muted">Total Balance</h6>
+                            <h4 class="text-primary" th:text="${accountSummary != null ? #numbers.formatDecimal(accountSummary['totalBalance'], 1, 2) : '0.00'}">$0.00</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h6 class="text-muted">Total Accounts</h6>
+                            <h4 th:text="${accountSummary != null ? accountSummary['totalAccounts'] : '0'}">0</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

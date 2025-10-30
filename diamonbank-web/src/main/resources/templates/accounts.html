@@ -1,0 +1,73 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}"
+      lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accounts - Diamond Bank</title>
+    
+    <!-- Add any additional CSS or JS files here -->
+    <link th:href="@{/css/accounts.css}" rel="stylesheet" th:if="${#bools.isTrue(@environment.getProperty('app.use-cdn', Boolean))}"/>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <div class="container mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 th:text="#{accounts.title}">Accounts</h1>
+
+            </div>
+
+            <!-- Example of iterating over accounts -->
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Account Number</th>
+                            <th>Account Type</th>
+                            <th>Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="account : ${accounts}" th:class="table-success">
+                            <td th:text="${account.number}">1234567890</td>
+                            <td th:text="${account.type}">Savings</td>
+                            <td th:text="${#numbers.formatDecimal(account.balance, 1, 2)}">0.00</td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(accounts)}">
+                            <td colspan="4" class="text-center">No accounts found</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div th:if="${errorMessage}">
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <span th:text="${errorMessage}"></span>
+                </div>
+            </div>
+
+            <!-- Example of using URL expressions -->
+            <div class="mt-3">
+                <a th:href="@{/accounts/new}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Create New Account
+                </a>
+            </div>
+
+            <!-- Example of using fragments -->
+            <div th:replace="fragments/account-summary :: account-summary">
+                <!-- This content will be replaced by the fragment -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Add page-specific scripts -->
+    <th:block layout:fragment="scripts">
+        <script th:src="@{/js/accounts.js}"></script>
+    </th:block>
+</body>
+</html>
