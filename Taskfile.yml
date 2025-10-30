@@ -16,8 +16,11 @@ includes:
     taskfile: ./diamonbank-eureka-server/Taskfile.yml
     dir: ./diamonbank-eureka-server
   apigateway:
-    taskfile: ./diamonbank-apigateway/Taskfile.yml
-    dir: ./diamonbank-apigateway
+    taskfile: ./diamoncode-apigateway/Taskfile.yml
+    dir: ./diamoncode-apigateway
+  web:
+    taskfile: ./diamonbank-web/Taskfile.yml
+    dir: ./diamonbank-web
 
 tasks:
   docker-pull-images:

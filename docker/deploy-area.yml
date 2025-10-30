@@ -7,9 +7,10 @@ services:
         max_attempts: 3
         window: 120s
     environment:
+      - SERVER_PORT=8080
       - SPRING_PROFILES_ACTIVE=${DEPLOY_ENVIRONMENT}
-      - SPRING_CONFIG_IMPORT=configserver:http://configserver:8081/
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8070/eureka/
+      - SPRING_CONFIG_IMPORT=configserver:http://configserver:8080/
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8080/eureka/
       - I18N_URL=http://dci18n:8080/
       - SPRING_ZIPKIN_BASEURL=http://zipkin:9411/
       - SPRING_RABBITMQ_HOST=rabbit_server

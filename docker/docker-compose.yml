@@ -12,11 +12,11 @@ services:
     container_name: configserver
     mem_limit: 700m
     ports:
-      - "8082:8081"
+      - "8082:8080"
     depends_on:
       - zipkin
     environment:
-      SERVER_PORT: 8081
+      SERVER_PORT: 8080
       SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
   eurekaserver:
@@ -24,7 +24,7 @@ services:
     container_name: eurekaserver
     mem_limit: 700m
     ports:
-      - "8070:8070"
+      - "8070:8080"
     depends_on:
       - configserver
       - zipkin
@@ -35,7 +35,8 @@ services:
         max_attempts: 3
         window: 120s
     environment:
-      SPRING_CONFIG_IMPORT: configserver:http://configserver:8081/
+      SERVER_PORT: 8080
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8080/
       SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
 
@@ -66,30 +67,22 @@ services:
       file: deploy-area.yml
       service: deploy_area
     ports:
-      - "9082:9082"
+      - "9082:8080"
       - "5005:5005"
     environment:
       - DEBUG_ENABLED=true
-  #accounts1:
-  #  image: ${ACCOUNTS_IMAGE}
-  #  container_name: accounts1
-  #  mem_limit: 700m
-  #  depends_on:
-      - configserver
-      - eurekaserver
-  #  extends:
-  #    file: deploy-area.yml
-  #    service: deploy_area
-  #  ports:
-  #    - "9087:9082"
-
+      - SPRING_DATASOURCE_URL=${ACCOUNTS_DATABASE_URL}
+      - SPRING_DATASOURCE_USERNAME=${DATABASE_USER}
+      - SPRING_DATASOURCE_PASSWORD=${DATABASE_PASSWORD}
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://localhost:7080/realms/wladecodeusers
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak:7080/realms/wladecodeusers/protocol/openid-connect/certs
 
   loans:
     image: ${LOANS_IMAGE}
     container_name: loans
     mem_limit: 700m
     ports:
-      - "8097:8090"
+      - "8097:8080"
     depends_on:
       - configserver
       - eurekaserver
@@ -102,7 +95,7 @@ services:
     container_name: cards
     mem_limit: 700m
     ports:
-      - "9010:9000"
+      - "9010:8080"
     depends_on:
       - configserver
       - eurekaserver
@@ -110,12 +103,12 @@ services:
       file: deploy-area.yml
       service: deploy_area
 
-  api_gateway:
+  api-gateway:
     image: ${APIGATEWAY_IMAGE}
-    container_name: api_gateway
+    container_name: api-gateway
     mem_limit: 700m
     ports:
-      - "8099:8099"
+      - "8099:8080"
       - "5006:5005"
     depends_on:
       - configserver
@@ -124,7 +117,7 @@ services:
       - loans
       - cards
       - dci18n
-      - keycloak_server
+      - keycloak
       - zipkin
     deploy:
       restart_policy:
@@ -133,17 +126,17 @@ services:
         max_attempts: 3
         window: 180s
     environment:
-      - SERVER_PORT=8099
+      - SERVER_PORT=8080
       - SPRING_PROFILES_ACTIVE=${DEPLOY_ENVIRONMENT}
-      - SPRING_CONFIG_IMPORT=configserver:http://configserver:8081/
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka/
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8080/eureka/
       - I18N_URL=http://dci18n:8080/
       - DEBUG_ENABLED=true
-      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak_server:7080/realms/diamon-bank/protocol/openid-connect/certs
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://localhost:7080/realms/wladecodeusers
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak:7080/realms/wladecodeusers/protocol/openid-connect/certs
       - SPRING_ZIPKIN_BASEURL=http://zipkin:9411/
 
   rabbit_server:
-    image: docker.io/bitnami/rabbitmq:3.9
+    image: rabbitmq:3-management
     container_name: rabbit_server
     ports:
       #- '4369:4369'
@@ -162,7 +155,7 @@ services:
     image: prom/prometheus:latest
     container_name: prometheus-server
     ports:
-      - "9090:9090"
+      - "9090:8080"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
 
@@ -170,25 +163,56 @@ services:
     image: grafana/grafana:latest
     container_name: grafana-server
     ports:
-      - "3010:3000"
+      - "3010:8080"
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=password
     depends_on:
       - prometheus-server
 
-  keycloak_server:
+  keycloak:
     image: quay.io/keycloak/keycloak:22.0.0
-    container_name:  keycloak_server
+    container_name: keycloak
     command: start-dev --http-port=7080
     ports:
       - "7080:7080"
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
-    #volumes:
-    #  - '/home/wllopez/dev/tools/keycloak-data/:/opt/keycloak/data/h2'
+      # Database configuration
+      - KC_DB=postgres
+      - KC_DB_URL=${KEYCLOAK_DATABASE_URL}
+      - KC_DB_USERNAME=${DATABASE_USER}
+      - KC_DB_PASSWORD=${DATABASE_PASSWORD}
+      - KC_HOSTNAME=localhost
+      - KC_HOSTNAME_STRICT=false
+      - KC_HTTP_ENABLED=true
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/realms/master" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
+  diamonbank_web:
+    image: ${WEB_IMAGE}
+    container_name: diamonbank_web
+    ports:
+      - "5015:5005"
+      - "8180:8080"
+    depends_on:
+      - api-gateway
+      - keycloak
+    environment:
+      - SERVER_PORT=8080
+      - DEBUG_ENABLED=true
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_DIAMONDBANKWEB_CLIENT_SECRET=${DIAMONBANKWEB_CLIENT_SECRET}
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_DIAMONDBANKWEB_REDIRECT_URI=http://localhost:8180/login/oauth2/code/diamondbankweb
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_DIAMONDBANKWEB_AUTHORIZATION_URI=http://localhost:7080/realms/wladecodeusers/protocol/openid-connect/auth
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_DIAMONDBANKWEB_TOKEN_URI=http://keycloak:7080/realms/wladecodeusers/protocol/openid-connect/token
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_DIAMONDBANKWEB_JWK_SET_URI=http://keycloak:7080/realms/wladecodeusers/protocol/openid-connect/certs
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_DIAMONDBANKWEB_USER_INFO_URI=http://keycloak:7080/realms/wladecodeusers/protocol/openid-connect/userinfo
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_DIAMONDBANKWEB_USER_NAME_ATTRIBUTE=preferred_username
+      - API_GATEWAY_HOST=http://api-gateway:8080
 
 volumes:
   rabbitmq_bank_data:

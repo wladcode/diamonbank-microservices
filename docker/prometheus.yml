@@ -14,7 +14,7 @@ scrape_configs:
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: [ cards:9000 ]
-  - job_name: 'api_gateway'
+  - job_name: 'api-gateway'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: [ api_gateway:8099 ]
+      - targets: [ api-gateway:8099 ]

@@ -81,39 +81,6 @@ To connect to your PostgreSQL database using DBeaver:
    - Verify your credentials match those used when starting the container
    - If using Docker Toolbox or Docker MaFchine, use the machine's IP instead of localhost
 
-## 6. Using Docker Compose (Recommended)
-
-Alternatively, you can use the following `docker-compose.yml` configuration:
-
-```yaml
-version: '3.8'
-
-services:
-  postgres:
-    image: postgres:latest
-    container_name: postgres-db
-    environment:
-      POSTGRES_USER: your_username
-      POSTGRES_PASSWORD: your_secure_password
-      POSTGRES_DB: your_database_name
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - postgres_config:/etc/postgresql
-    restart: unless-stopped
-
-volumes:
-  postgres_data:
-  postgres_config:
-```
-
-Save this in your `docker-compose.yml` and run:
-
-```bash
-docker-compose up -d
-```
-
 ## Important Notes
 
 1. Replace `your_username`, `your_secure_password`, and `your_database_name` with your desired credentials.
