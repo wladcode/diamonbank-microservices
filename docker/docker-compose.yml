@@ -89,6 +89,12 @@ services:
     extends:
       file: deploy-area.yml
       service: deploy_area
+    environment:
+      - DEBUG_ENABLED=true
+      - SPRING_DATASOURCE_URL=${LOANS_DATABASE_URL}
+      - SPRING_DATASOURCE_USERNAME=${DATABASE_USER}
+      - SPRING_DATASOURCE_PASSWORD=${DATABASE_PASSWORD}
+
 
   cards:
     image: ${CARDS_IMAGE}
@@ -102,6 +108,11 @@ services:
     extends:
       file: deploy-area.yml
       service: deploy_area
+    environment:
+      - DEBUG_ENABLED=true
+      - SPRING_DATASOURCE_URL=${CARDS_DATABASE_URL}
+      - SPRING_DATASOURCE_USERNAME=${DATABASE_USER}
+      - SPRING_DATASOURCE_PASSWORD=${DATABASE_PASSWORD}
 
   api-gateway:
     image: ${APIGATEWAY_IMAGE}

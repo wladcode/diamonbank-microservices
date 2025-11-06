@@ -15,7 +15,6 @@ import java.sql.Date;
 public class JpaEntityCards {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "card_id")
     private long cardId;
 

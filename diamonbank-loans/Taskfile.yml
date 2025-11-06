@@ -3,8 +3,7 @@ version: "3"
 vars:
   IMAGE_NAME: diamonbank-loans
   LOCAL_IMAGE: local/{{.IMAGE_NAME}}:SNAPSHOT
-  DOCKER_HUB_IMAGE_VERSION: chamow01/{{.IMAGE_NAME}}:v1
-  DOCKER_HUB_IMAGE_FINAL: chamow01/{{.IMAGE_NAME}}:latest
+  DOCKER_HUB_IMAGE_VERSION: chamow01/{{.IMAGE_NAME}}:v2
 
 tasks:
   mvn-clean-install:
@@ -18,5 +17,4 @@ tasks:
     cmds:
       - task: mvn-clean-install
       - docker build -t {{.DOCKER_HUB_IMAGE_VERSION}} .
-      - docker tag {{.DOCKER_HUB_IMAGE_VERSION}} {{.DOCKER_HUB_IMAGE_FINAL}}
       - docker push {{.DOCKER_HUB_IMAGE_FINAL}}

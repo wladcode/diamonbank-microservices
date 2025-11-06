@@ -5,8 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "loans")
@@ -16,15 +15,14 @@ import java.time.LocalDate;
 public class JpaEntityLoans {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "loan_number")
     private long loanNumber;
 
     @Column(name = "customer_id")
-    private Long customerId;
+    private long customerId;
 
     @Column(name = "start_date")
-    private Date startDate;
+    private LocalDateTime startDate;
 
     @Column(name = "loan_type")
     private String loanType;
@@ -39,5 +37,5 @@ public class JpaEntityLoans {
     private int outstandingAmount;
 
     @Column(name = "create_date")
-    private String createDate;
+    private LocalDateTime createDate;
 }

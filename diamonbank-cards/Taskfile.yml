@@ -3,8 +3,7 @@ version: "3"
 vars:
   IMAGE_NAME: diamonbank-cards
   LOCAL_IMAGE: local/{{.IMAGE_NAME}}:SNAPSHOT
-  DOCKER_HUB_IMAGE_VERSION: chamow01/{{.IMAGE_NAME}}:v1
-  DOCKER_HUB_IMAGE_FINAL: chamow01/{{.IMAGE_NAME}}:latest
+  DOCKER_HUB_IMAGE_VERSION: chamow01/{{.IMAGE_NAME}}:v2
 
 tasks:
   mvn-clean-install:
@@ -13,10 +12,9 @@ tasks:
   local-image:
     cmds:
       - task: mvn-clean-install
-      - mvn spring-boot:build-image -Dmy-image-name={{.LOCAL_IMAGE}} -Dmaven.test.skip=true
+      - docker build -t {{.LOCAL_IMAGE}} .
   docker-hub-image:
     cmds:
       - task: mvn-clean-install
-      - mvn spring-boot:build-image -Dmy-image-name={{.DOCKER_HUB_IMAGE_VERSION}} -Dmaven.test.skip=true
-      - docker tag {{.DOCKER_HUB_IMAGE_VERSION}} {{.DOCKER_HUB_IMAGE_FINAL}}
+      - docker build -t {{.DOCKER_HUB_IMAGE_VERSION}} .
       - docker push {{.DOCKER_HUB_IMAGE_FINAL}}

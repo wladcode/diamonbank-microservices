@@ -99,12 +99,15 @@ spring:
 
     datasource:
         url: jdbc:postgresql://localhost:5432/accounts
+        driver-class-name: org.postgresql.Driver
         username: postgres
         password: Pos1gre2023
-        driver-class-name: org.postgresql.Driver
     jpa:
         database-platform: org.hibernate.dialect.PostgreSQLDialect
         show-sql: true
+        sql:
+          init:
+            mode: always
         properties:
             hibernate:
                 format_sql: true

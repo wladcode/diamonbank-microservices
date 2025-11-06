@@ -1,14 +1,11 @@
-DROP TABLE IF EXISTS loans;
-
-CREATE TABLE loans (
-    loan_number int AUTO_INCREMENT,
-    customer_id int NOT NULL,
-    start_date date NOT NULL,
+CREATE TABLE IF NOT EXISTS loans (
+    loan_number bigint PRIMARY KEY,
+    customer_id bigint NOT NULL,
+    start_date timestamp NOT NULL,
     loan_type varchar(100) NOT NULL,
     total_loan int NOT NULL,
     amount_paid int NOT NULL,
     outstanding_amount int NOT NULL,
-    create_date date DEFAULT NULL,
-    PRIMARY KEY(loan_number)
+    create_date timestamp DEFAULT NULL
 );
 
