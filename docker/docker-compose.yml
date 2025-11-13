@@ -145,6 +145,9 @@ services:
       - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://localhost:7080/realms/wladecodeusers
       - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak:7080/realms/wladecodeusers/protocol/openid-connect/certs
       - SPRING_ZIPKIN_BASEURL=http://zipkin:9411/
+      - CONFIG_URIS_ACCOUNTS=http://accounts:8080/
+      - CONFIG_URIS_LOANS=lb://loans
+      - CONFIG_URIS_CARDS=lb://cards
 
   rabbit_server:
     image: rabbitmq:3-management
