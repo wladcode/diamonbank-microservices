@@ -4,6 +4,6 @@ import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.ConsolidatePos
 
 public interface GetConsolidatePositionUseCase {
 
-    public ConsolidatePositionDto getConsolidatePosition(long customerId);
+    public ConsolidatePositionDto getConsolidatePosition(long customerId, String correlationId);
 
 }

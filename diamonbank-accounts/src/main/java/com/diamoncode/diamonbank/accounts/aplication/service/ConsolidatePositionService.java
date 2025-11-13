@@ -16,9 +16,9 @@ public class ConsolidatePositionService implements GetConsolidatePositionUseCase
     private final AccountPort loadAccountPort;
 
     @Override
-    public ConsolidatePositionDto getConsolidatePosition(long customerId) {
+    public ConsolidatePositionDto getConsolidatePosition(long customerId, String correlationId) {
 
-        return loadAccountPort.getConsolidatePosition(customerId);
+        return loadAccountPort.getConsolidatePosition(customerId, correlationId);
 
     }
 }

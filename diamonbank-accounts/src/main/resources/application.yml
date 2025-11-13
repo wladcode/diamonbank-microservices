@@ -143,6 +143,7 @@ spring:
 #Logging
 logging:
   level:
+    com.diamoncode.diamonbank.accounts: DEBUG
     org.springframework.security: DEBUG
     org.springframework.security.oauth2.client: DEBUG
     org.springframework.security.oauth2.core: DEBUG

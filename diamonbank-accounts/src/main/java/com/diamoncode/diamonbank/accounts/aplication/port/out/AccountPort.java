@@ -11,7 +11,7 @@ public interface AccountPort {
 
     List<AccountDto> getAccountsByUser(Long userId);
 
-    ConsolidatePositionDto getConsolidatePosition(Long accountId);
+    ConsolidatePositionDto getConsolidatePosition(Long accountId, String correlationId);
 
     Account loadAccount(Long accountId, LocalDateTime now);
 

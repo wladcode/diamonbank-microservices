@@ -47,20 +47,26 @@ public class AccountPersistenceAdapter implements AccountPort {
     }
 
     @Override
-    public ConsolidatePositionDto getConsolidatePosition(Long accountId) {
+    public ConsolidatePositionDto getConsolidatePosition(Long accountId, String correlationId) {
+        log.debug("correlationId: {},  time start: {}", correlationId, System.currentTimeMillis());
+
         CustomerDto customerDto = new CustomerDto(accountId);
         CompletableFuture<List<JpaEntityAccount>> futureAccounts = CompletableFuture.supplyAsync(() -> accountsRepository.findByCustomerId(accountId));
         CompletableFuture<List<LoansDto>> futureLoans = CompletableFuture.supplyAsync(() -> loansFeingClient.getLoans(customerDto));
         CompletableFuture<List<CardsDto>> futureCards = CompletableFuture.supplyAsync(() -> cardsFeingClient.getCardDetails(customerDto));
         CompletableFuture<ProductDto> futureProduct = CompletableFuture.supplyAsync(() -> productClient.getProductById(accountId));
 
-        return CompletableFuture.allOf(futureAccounts, futureLoans, futureCards, futureProduct)
+        ConsolidatePositionDto consolidatePositionDto = CompletableFuture.allOf(futureAccounts, futureLoans, futureCards, futureProduct)
                 .thenApply(v -> ConsolidatePositionDto.builder()
                         .accounts(accountMapper.mapToDomain(futureAccounts.join()))
                         .loans(futureLoans.join())
                         .cards(futureCards.join())
                         .product(futureProduct.join())
                         .build()).join();
+
+        log.debug("correlationId: {}, time end:{}", correlationId, System.currentTimeMillis());
+
+        return consolidatePositionDto;
     }
 
 
