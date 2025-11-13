@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class RoleConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
+public class KeycloakRoleConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
     @Override
     public Collection<GrantedAuthority> convert(Jwt jwt) {
         Map<String, Object> realmAccess = (Map<String, Object>) jwt.getClaims().get("realm_access");
@@ -19,11 +19,9 @@ public class RoleConverter implements Converter<Jwt, Collection<GrantedAuthority
             return List.of();
         }
 
-        Collection<GrantedAuthority> returrnValue = ((List<String>) realmAccess.get("roles"))
+        return  ((List<String>) realmAccess.get("roles"))
                 .stream().map(roleName -> "ROLE_" + roleName)
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
-
-        return returrnValue;
     }
 }

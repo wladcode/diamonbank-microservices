@@ -1,6 +1,6 @@
 # Variables
-ARG builder_image=openjdk:17-slim
-ARG runtimer_image=openjdk:17-slim
+ARG builder_image=openjdk:17-ea-17-slim-buster
+ARG runtimer_image=openjdk:17-ea-17-slim-buster
 
 FROM ${builder_image} as builder
 WORKDIR /home

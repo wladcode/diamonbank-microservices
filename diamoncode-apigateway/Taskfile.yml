@@ -3,7 +3,7 @@ version: "3"
 vars:
   IMAGE_NAME: diamonbank-apigateway
   LOCAL_IMAGE: local/{{.IMAGE_NAME}}:SNAPSHOT
-  DOCKER_HUB_IMAGE_VERSION: chamow01/{{.IMAGE_NAME}}:v2
+  DOCKER_HUB_IMAGE_VERSION: chamow01/{{.IMAGE_NAME}}:v3
 
 tasks:
   mvn-clean-install:

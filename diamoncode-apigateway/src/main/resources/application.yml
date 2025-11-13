@@ -4,6 +4,10 @@ server:
   #max-http-header-size: 16KB # 16 KB (Double the default)
 config:
   api-name: "api"
+  uris:
+    ACCOUNTS: http://localhost:9082
+    LOANS: http://localhost:8097
+    CARDS: http://localhost:9010
   endpoints:
     ACCOUNTS: "accounts"
     CUSTOMERS: "customer"
@@ -41,60 +45,69 @@ spring:
       #httpclient:
         # Increase the max header size for requests originating from the gateway
         #max-header-size: 16384 # 16 KB (Double the default)
-      discovery:
-        locator:
-        #enabled: true
-        #lower-case-service-id: true
-      mvc:
-        routes:
-          # CONFIG POR ACCOUNTS MS
-          - id: accounts-ms-actuator
-            uri: http://accounts:8080
-            predicates:
-              - Path=/${config.api-name}/${config.endpoints.ACCOUNTS}/actuator/**
-            filters:
-              - RewritePath=/${config.api-name}/${config.endpoints.ACCOUNTS}/actuator/(?<segment>.*), /actuator/$\{segment}
-          - id: accounts-ms
-            uri: http://accounts:8080
-            predicates:
-              - Path=/${config.api-name}/${config.endpoints.ACCOUNTS}/**
-            filters:
-              - RewritePath=/${config.api-name}/${config.endpoints.ACCOUNTS}/(?<segment>.*), /accounts/\${segment}
-          # CONFIG POR CUSTOMERS MS
-          - id: accounts-ms-customers
-            uri: http://accounts:8080
-            predicates:
-              - Path=/api/customer/**
-            filters:
-              - RewritePath=^/api/customer/(?<segment>.*), /customer/\${segment}
-          # CONFIG POR LOANS MS
-          - id: loans-ms
-            uri: lb://loans
-            predicates:
-              - Path=/${config.api-name}/${config.endpoints.LOANS}/actuator/**
-            filters:
-              - RewritePath=/${config.api-name}/${config.endpoints.LOANS}/actuator/(?<segment>.*), /actuator/$\{segment}
-          - id: loans-ms
-            uri: lb://loans
-            predicates:
-              - Path=/${config.api-name}/${config.endpoints.LOANS}/**
-            filters:
-              - RewritePath=/${config.api-name}/${config.endpoints.LOANS}/(?<segment>.*), /loans/$\{segment}
-              #- AddResponseHeaders
 
-          # CONFIG POR CARDS
-          - id: cards-ms
-            uri: lb://cards
-            predicates:
-              - Path=/${config.api-name}/${config.endpoints.CARDS}/actuator/**
-            filters:
-              - RewritePath=/${config.api-name}/${config.endpoints.CARDS}/actuator/(?<segment>.*), /actuator/$\{segment}
-          - id: cards-ms
-            uri: lb://cards
-            predicates:
-              - Path=/${config.api-name}/${config.endpoints.CARDS}/**
-            filters:
-              - RewritePath=/${config.api-name}/${config.endpoints.CARDS}/(?<segment>.*), /cards/$\{segment}
+      #Configuration for service discovery (all details about microservices are fetched from Eureka)
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: false # to disable default routes
+              lowerCaseServiceId: true
+      routes:
+        # CONFIG POR ACCOUNTS MS
+        - id: accounts-ms-actuator
+          uri: ${config.uris.ACCOUNTS}
+          predicates:
+            - Path=/${config.api-name}/${config.endpoints.ACCOUNTS}/actuator/**
+          filters:
+            - RewritePath=/${config.api-name}/${config.endpoints.ACCOUNTS}/actuator/(?<segment>.*), /actuator/$\{segment}
+        - id: accounts-ms
+          uri: ${config.uris.ACCOUNTS}
+          predicates:
+            - Path=/${config.api-name}/${config.endpoints.ACCOUNTS}/**
+          filters:
+            - RewritePath=/${config.api-name}/${config.endpoints.ACCOUNTS}/(?<segment>.*), /accounts/\${segment}
+            - AddResponseHeader=X-Server, DiamonCode
+
+        # CONFIG POR CUSTOMERS MS
+        - id: accounts-ms-customers
+          uri: ${config.uris.ACCOUNTS}
+          predicates:
+            - Path=/api/customer/**
+          filters:
+            - RewritePath=^/api/customer/(?<segment>.*), /customer/\${segment}
+            - AddResponseHeader=X-Server, DiamonCode
+
+        # CONFIG POR LOANS MS
+        - id: loans-ms-actuator
+          uri: ${config.uris.LOANS}
+          predicates:
+            - Path=/${config.api-name}/${config.endpoints.LOANS}/actuator/**
+          filters:
+            - RewritePath=/${config.api-name}/${config.endpoints.LOANS}/actuator/(?<segment>.*), /actuator/$\{segment}
+        - id: loans-ms
+          uri: ${config.uris.LOANS}
+          predicates:
+            - Path=/${config.api-name}/${config.endpoints.LOANS}/**
+          filters:
+            - RewritePath=/${config.api-name}/${config.endpoints.LOANS}/(?<segment>.*), /loans/$\{segment}
+            - AddResponseHeader=X-Server, DiamonCode
+            - AddResponseHeader=X-Country, EC
+
+        # CONFIG POR CARDS
+        - id: cards-ms-actuator
+          uri: ${config.uris.CARDS}
+          predicates:
+            - Path=/${config.api-name}/${config.endpoints.CARDS}/actuator/**
+          filters:
+            - RewritePath=/${config.api-name}/${config.endpoints.CARDS}/actuator/(?<segment>.*), /actuator/$\{segment}
+        - id: cards-ms
+          uri: ${config.uris.CARDS}
+          predicates:
+            - Path=/${config.api-name}/${config.endpoints.CARDS}/**
+          filters:
+            - RewritePath=/${config.api-name}/${config.endpoints.CARDS}/(?<segment>.*), /cards/$\{segment}
+            - AddResponseHeader=X-Server, DiamonCode
   #USED BY LOG AGREGATION WITH ZIPKIN
   sleuth:
     sampler:
@@ -110,11 +123,11 @@ management:
   # Enables actuator/gateway
   endpoint:
     gateway:
-      enabled: true
+      access: unrestricted
   endpoints:
     web:
       exposure:
-        include: "health, info, gateway, prometheus"
+        include: "*"
   # Enables actuator/info
   info:
     env:
@@ -131,29 +144,26 @@ info:
 
 logging:
   level:
+    com.wladecode.diamoncode.apigateway: DEBUG
     #root: DEBUG
     #org.springframework: DEBUG
-    org.springframework.cloud.gateway: DEBUG
+    org.springframework.cloud.gateway: ERROR
     #reactor.netty.http.client: DEBUG
     #com.diamoncode.diamonbankapigateway: DEBUG
 
     org.springframework.security: DEBUG
-    org.springframework.security.oauth2.client: DEBUG
-    org.springframework.security.oauth2.core: DEBUG
-    org.springframework.security.web.authentication.preauth: DEBUG
 
 
 #########################################################
 #Eureka client configuration
 #########################################################
 eureka:
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    service-url:
-      defaultZone: http://localhost:8070/eureka/
   instance:
-    instance-id: '${spring.application.name}:${random.uuid}:${server.port}'
-    prefer-ip-address: true
-    hostname: localhost
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
+
 
