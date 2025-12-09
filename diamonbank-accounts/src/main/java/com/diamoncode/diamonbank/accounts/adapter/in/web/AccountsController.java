@@ -8,7 +8,6 @@ import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.AccountDto;
 import com.diamoncode.diamonbank.accounts.aplication.port.out.dto.PropertiesDto;
 import com.diamondcode.common.adapter.in.web.model.ResponseDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -38,10 +37,8 @@ public class AccountsController {
 
 
     @PostMapping("/")
-    public ResponseEntity<ResponseDTO> createAccount(@Valid @RequestBody AccountDto accountDto, HttpServletRequest request) {
-        logger.info("Request {}", request.getRequestURL());
-        String idUser = request.getHeader("idUser");
-        long idUserLong = idUser == null ? 0 : Long.parseLong(idUser);
+    public ResponseEntity<ResponseDTO> createAccount(@Valid @RequestBody AccountDto accountDto, @RequestHeader("x-user-id") long idUserLong  ) {
+        logger.info("idUserLong {}",idUserLong);
 
         long idAccount = accountsAdapter.createAccount(accountDto, idUserLong);
 

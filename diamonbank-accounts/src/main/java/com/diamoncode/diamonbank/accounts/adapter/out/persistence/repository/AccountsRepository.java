@@ -15,5 +15,6 @@ public interface AccountsRepository extends CrudRepository<JpaEntityAccount, Lon
     List<JpaEntityAccount> findByCustomerId (long customerId);
     Page<JpaEntityAccount> findByCustomerId (long customerId, Pageable pegeableRequest);
     Optional<JpaEntityAccount> findByAccountId (long idAccount);
+    Optional<JpaEntityAccount> findByAccountNumber(String accountNumber);
 
 }

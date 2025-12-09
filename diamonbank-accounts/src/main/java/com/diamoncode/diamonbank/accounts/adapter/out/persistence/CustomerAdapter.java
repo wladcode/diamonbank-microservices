@@ -6,6 +6,7 @@ import com.diamoncode.diamonbank.accounts.adapter.out.persistence.repository.Cus
 import com.diamoncode.diamonbank.accounts.aplication.port.out.CustomerPort;
 import com.diamoncode.diamonbank.accounts.aplication.port.out.request.CustomerRequest;
 import com.diamoncode.diamonbank.accounts.aplication.port.out.request.CustomerResponse;
+import com.diamondcode.common.adapter.in.web.exception.CustomNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -23,5 +24,12 @@ public class CustomerAdapter implements CustomerPort {
                     JpaEntityCustomer savedCustomer = customersRepository.save(newCustomer);
                     return CustomerMapper.mapToResponse(savedCustomer);
                 });
+    }
+
+    @Override
+    public CustomerResponse findById(long id) {
+        return  customersRepository.findById(id)
+                .map(CustomerMapper::mapToResponse)
+                .orElseThrow(()-> new CustomNotFoundException("There is not user"));
     }
 }

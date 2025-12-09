@@ -5,4 +5,5 @@ import com.diamoncode.diamonbank.accounts.aplication.port.out.request.CustomerRe
 
 public interface CustomerPort {
     CustomerResponse createCustomer(CustomerRequest customerRequest);
+    CustomerResponse findById(long id);
 }

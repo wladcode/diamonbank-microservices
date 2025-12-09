@@ -1,5 +1,7 @@
 package com.diamoncode.diamonbank.accounts.adapter.in.web.exception;
 
+import com.diamondcode.common.adapter.in.web.exception.CustomFoundException;
+import com.diamondcode.common.adapter.in.web.exception.CustomNotFoundException;
 import com.diamondcode.common.adapter.in.web.model.ResponseErrorDTO;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
@@ -19,10 +21,16 @@ import java.util.Map;
 public class ControllerExceptionAdvisor {
 
     // Handle AccountNotFoundException and return a ResponseErrorDTO with a BAD_REQUEST status
-    @ExceptionHandler(AccountNotFoundException.class)
+    @ExceptionHandler(CustomNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseErrorDTO handleAccountNotFoundException(AccountNotFoundException exception) {
+    public ResponseErrorDTO handleNotFoundException(CustomNotFoundException exception) {
         return new ResponseErrorDTO(HttpStatus.NOT_FOUND.value(), exception.getMessage());
+    }
+
+    @ExceptionHandler(CustomFoundException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseErrorDTO handleFoundException(CustomFoundException exception) {
+        return new ResponseErrorDTO(HttpStatus.CONFLICT.value(), exception.getMessage());
     }
 
 

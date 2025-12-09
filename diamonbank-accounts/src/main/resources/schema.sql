@@ -13,5 +13,5 @@ CREATE TABLE IF NOT EXISTS accounts (
     account_type varchar(100) NOT NULL,
     branch_address varchar(200) NOT NULL,
     created_date timestamp DEFAULT NULL,
-    customer_id int NOT NULL
+    customer_id numeric NOT NULL
 );
