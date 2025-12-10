@@ -116,11 +116,7 @@ spring:
             ddl-auto: none
     profiles:
         active: dev
-    rabbitmq:
-        host: localhost
-        password: password
-        port: 5672
-        username: username
+
     sleuth:
         sampler:
             probability: 1
@@ -139,6 +135,18 @@ spring:
                 jwt:
                     issuer-uri: http://localhost:7080/realms/wladecodeusers
                     jwk-set-uri: http://localhost:7080/realms/wladecodeusers/protocol/openid-connect/certs
+    cloud:
+        stream:
+            bindings:
+                sendCommunication-out-0:
+                    destination: send-communication
+                    group: accounts
+    rabbitmq:
+      host: localhost
+      port: 5672
+      username: guest
+      password: guest
+      connection-timeout: 10s
 
 #Logging
 logging:

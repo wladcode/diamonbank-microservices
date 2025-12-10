@@ -63,6 +63,7 @@ services:
     depends_on:
       - configserver
       - eurekaserver
+      - rabbit_server
     extends:
       file: deploy-area.yml
       service: deploy_area
@@ -160,8 +161,8 @@ services:
       #- '25672:25672'
       - '15673:15672' #for ui
     environment:
-      - RABBITMQ_USERNAME=username
-      - RABBITMQ_PASSWORD=password
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
     volumes:
       - 'rabbitmq_bank_data:/bitnami'
 
@@ -228,6 +229,24 @@ services:
       - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_DIAMONDBANKWEB_USER_NAME_ATTRIBUTE=preferred_username
       - API_GATEWAY_HOST=http://api-gateway:8080
 
+  messasing:
+    image: ${MESSAGING_iMAGE}
+    container_name: messasing
+    mem_limit: 700m
+    depends_on:
+      - rabbit_server
+    ports:
+      - "8299:8080"
+      - "5007:5005"
+    environment:
+      - DEBUG_ENABLED=true
+      - SPRING_RABBITMQ_HOST=rabbit_server
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
+      - SPRING_RABBITMQ_QUEUE=rabbit-queue-testing
+      - SPRING_RABBITMQ_EXCHANGE=rabbit-exchange-testing
+      - SPRING_RABBITMQ_ROUTING=rabbit-routing-testing
 volumes:
   rabbitmq_bank_data:
     driver: local

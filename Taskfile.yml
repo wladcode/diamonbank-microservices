@@ -21,6 +21,9 @@ includes:
   web:
     taskfile: ./diamonbank-web/Taskfile.yml
     dir: ./diamonbank-web
+  messaging:
+    taskfile: ./diamoncode-messaging/Taskfile.yml
+    dir: ./diamoncode-messaging
 
 tasks:
   docker-pull-images:
