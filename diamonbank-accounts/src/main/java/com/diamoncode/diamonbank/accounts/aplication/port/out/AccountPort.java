@@ -16,4 +16,6 @@ public interface AccountPort {
     Account loadAccount(Long accountId, LocalDateTime now);
 
     AccountDto getAccountByUser(long idAccount);
+
+    boolean updateCommunicationStatus(Long accountId);
 }

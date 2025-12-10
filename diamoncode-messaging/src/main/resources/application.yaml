@@ -6,14 +6,22 @@ spring:
     name: diamoncode-messaging
 
   cloud:
+    #########################################################
+    # Functions definitions
+    #########################################################
     function:
       definition: email|sms
 
     stream:
       bindings:
+        #########################################################
+        # Properties for use of rabbit
+        #########################################################
         emailsms-in-0:
           destination: send-communication
           group: ${spring.application.name}
+        emailsms-out-0:
+          destination: communication-sent
 
   rabbitmq:
     host: localhost

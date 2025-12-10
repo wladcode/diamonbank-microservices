@@ -36,4 +36,7 @@ public class JpaEntityAccount {
     @Column(name = "customer_id")
     private long customerId;
 
+    @Column(name = "communication_sw")
+    private Boolean communicationSw;
+
 }

@@ -136,11 +136,21 @@ spring:
                     issuer-uri: http://localhost:7080/realms/wladecodeusers
                     jwk-set-uri: http://localhost:7080/realms/wladecodeusers/protocol/openid-connect/certs
     cloud:
+        #########################################################
+        # Functions definitions
+        #########################################################
+        function:
+            definition: updateCommunication
+        #########################################################
+        #Properties for use of rabbit
+        #########################################################
         stream:
             bindings:
+                updateCommunication-in-0:
+                    destination: communication-sent
+                    group: ${spring.application.name}
                 sendCommunication-out-0:
                     destination: send-communication
-                    group: accounts
     rabbitmq:
       host: localhost
       port: 5672

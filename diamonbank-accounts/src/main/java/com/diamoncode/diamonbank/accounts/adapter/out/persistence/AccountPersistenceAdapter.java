@@ -103,10 +103,10 @@ public class AccountPersistenceAdapter implements AccountPort {
         JpaEntityAccount jpaEntityAccount = accountMapper.mapToJpaEntity(accountDto);
         jpaEntityAccount.setCustomerId(customer.id());
 
-        accountsRepository.save(jpaEntityAccount);
-        log.info("Account created successfully with id: {}", jpaEntityAccount.getAccountId());
+        JpaEntityAccount savedAccount = accountsRepository.save(jpaEntityAccount);
+        log.info("Account created successfully with id: {}", savedAccount);
 
-        sendCommunication(accountDto, customer);
+        sendCommunication(savedAccount.getAccountId(), customer);
         return jpaEntityAccount.getAccountId();
 
     }
@@ -142,10 +142,10 @@ public class AccountPersistenceAdapter implements AccountPort {
 
     }
 
-    private void sendCommunication(AccountDto accountDto, CustomerResponse customerResponse) {
+    private void sendCommunication(Long accountId, CustomerResponse customerResponse) {
         try {
             var accountMsgDto = new AccountMessageDto(
-                    accountDto.getId(),
+                    accountId,
                     customerResponse.name(),
                     customerResponse.email(),
                     customerResponse.phone()
@@ -157,6 +157,21 @@ public class AccountPersistenceAdapter implements AccountPort {
         } catch (MessageHandlingException e) {
             log.error("Error sending notification {} ", e.getMessage());
         }
+    }
+
+    @Override
+    public boolean updateCommunicationStatus(Long accountId) {
+        if(accountId ==null){
+            return  false;
+        }
+
+        JpaEntityAccount account = accountsRepository.findByAccountId(accountId).orElseThrow(
+                ()-> new CustomNotFoundException(String.format("Account id %s doest exists", accountId.toString()))
+        );
+
+        account.setCommunicationSw(true);
+        accountsRepository.save(account);
+        return true;
     }
 
 }
